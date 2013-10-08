@@ -1,5 +1,6 @@
 \documentclass[12pt]{article}
-%Gummi|061|=)
+\usepackage{multicol}
+
 % title page
 \begin{document}
 \title{Visualizing and Refining Connectivity Map Query Results}
@@ -30,8 +31,45 @@ The Connectivity Map (CMap) is a database of gene expression signatures obtained
 
 Current pattern matching algorithms that perform CMap queries suffer from a universal weakness -- the enormous size and richness of signatures in CMap means that a query typically generates hundreds of strong correlations which are hard to distinguish thereby making prioritization on the basis of a distance metric difficult.
 
-We hypothesize that one mode of prioritization is to highlight query results that are highly interconnected amongst themselves over singletons. The goal of this work is to provide a web-based tool for visualizing CMap query results in a graph or network layout and to refine query results into more actionable hit lists.
+We hypothesize that one mode of prioritization is to highlight query results that are highly interconnected amongst themselves over singletons. The goal of this work is to provide a web-based tool for implementing an interconnectivity-based method of query result refinement and of visualizing CMap query results in a graph layout.
 \end{abstract}
 
 
+% background
+\section{Background}
+\subsection{The Connectivity Map}
+\begin{multicols}{2}
+The connectivity map is a database containing the gene expression profiles resulting from treating cultured cells with various chemical and genomic perturbations \citep{lamb2006}.
+\end{multicols}
+\subsection{Graphical Depictions of Biological Phenomena}
+\subsection{Approach for This Work}
+
+% methods
+\section{Methods}
+\subsection{Software Components}
+\subsubsection{Front End: HTML \& D3.js}
+\subsubsection{Back End: MongoDB}
+\begin{multicols}{2}
+
+\end{multicols}
+
+% challenges
+\section{Potential Challenges}
+\begin{multicols}{2}
+
+\end{multicols}
+
+
+% timeline
+\section{Preliminary Timeline}
+
+% bibliography
+\begin{thebibliography}{99}
+\bibitem{lamb2006}
+  Justin Lamb et al,
+  \emph{The Connectivity Map: Using Gene Expression   Signatures to Connect Small Molecules, Genes, and Disease}.
+  Science,
+   313,
+  1994.
+\end{thebibliography}
 \end{document}
