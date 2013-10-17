@@ -1,5 +1,8 @@
 \documentclass[12pt]{article}
 \usepackage{multicol}
+\usepackage{apacite}
+\usepackage{graphicx}
+\DeclareGraphicsExtensions{.pdf,.svg,.png,.jpg}
 
 % title page
 \begin{document}
@@ -38,38 +41,36 @@ We hypothesize that one mode of prioritization is to highlight query results tha
 % background
 \section{Background}
 \subsection{The Connectivity Map}
-\begin{multicols}{2}
-The connectivity map is a database containing the gene expression profiles resulting from treating cultured cells with various chemical and genomic perturbations \citep{lamb2006}.
-\end{multicols}
+The connectivity map is a database containing the gene expression profiles resulting from treating cultured cells with various chemical and genomic perturbations \cite{lamb2006}.
+\subsection{Graphical Models}
 \subsection{Graphical Depictions of Biological Phenomena}
+Although they originated in the field of computer science, graphs have frequently been used as tools to model biological phenomena. Graphical models of protein interaction networks, gene expression networks, and other similar phenomena are commonplace. Because of its widespread use and adoption, I believe the graphical model is an appropriate and effective means to depict connectivity in the CMap sense.
 \subsection{Approach for This Work}
+In this work, a graph will be used to depict the existence and strength of connections between gene expression signatures in the CMap database. Signatures will be represented as nodes and their pairwise connections by the edges. The final app might look something like this.
+% app mockup image
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{img/app_mockup}
+\caption{The App}
+\label{fig:app_mockup}
+\end{figure}
 
 % methods
 \section{Methods}
 \subsection{Software Components}
 \subsubsection{Front End: HTML \& D3.js}
-\subsubsection{Back End: MongoDB}
-\begin{multicols}{2}
-
-\end{multicols}
+\subsubsection{Back End: Node.js \& MongoDB}
 
 % challenges
 \section{Potential Challenges}
-\begin{multicols}{2}
 
-\end{multicols}
 
 
 % timeline
 \section{Preliminary Timeline}
 
 % bibliography
-\begin{thebibliography}{99}
-\bibitem{lamb2006}
-  Justin Lamb et al,
-  \emph{The Connectivity Map: Using Gene Expression   Signatures to Connect Small Molecules, Genes, and Disease}.
-  Science,
-   313,
-  1994.
-\end{thebibliography}
+\bibliographystyle{apacite}
+\bibliography{bibliography}
+
 \end{document}

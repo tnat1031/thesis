@@ -1,0 +1,28 @@
+\begin{thebibliography}{}
+
+\bibitem [\protect \citeauthoryear {%
+Justin~Lamb%
+}{%
+Justin~Lamb%
+}{%
+{\protect \APACyear {2006}}%
+}]{%
+lamb2006}
+\APACinsertmetastar {%
+lamb2006}%
+\begin{APACrefauthors}%
+Justin~Lamb, e\BPBI a.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2006}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {The Connectivity Map: Using Gene Expression Signatures
+  to Connect Small Molecules, Genes, and Disease} {The connectivity map: Using
+  gene expression signatures to connect small molecules, genes, and
+  disease}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Science}{313}{}{}.
+\PrintBackRefs{\CurrentBib}
+
+\end{thebibliography}
