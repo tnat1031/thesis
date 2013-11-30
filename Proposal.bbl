@@ -1,28 +1,251 @@
 \begin{thebibliography}{}
 
 \bibitem [\protect \citeauthoryear {%
-Justin~Lamb%
+Friedman%
 }{%
-Justin~Lamb%
+Friedman%
 }{%
-{\protect \APACyear {2006}}%
+{\protect \APACyear {2004}}%
 }]{%
-lamb2006}
+friedman_inferring_2004}
 \APACinsertmetastar {%
-lamb2006}%
+friedman_inferring_2004}%
 \begin{APACrefauthors}%
-Justin~Lamb, e\BPBI a.%
+Friedman, N.%
 \end{APACrefauthors}%
 \unskip\
 \newblock
-\APACrefYearMonthDay{2006}{}{}.
+\APACrefYearMonthDay{2004}{{\APACmonth{02}}}{}.
 \newblock
-{\BBOQ}\APACrefatitle {The Connectivity Map: Using Gene Expression Signatures
+{\BBOQ}\APACrefatitle {Inferring Cellular Networks Using Probabilistic
+  Graphical Models} {Inferring cellular networks using probabilistic graphical
+  models}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Science}{303}{5659}{799--805}.
+\newblock
+\begin{APACrefURL}
+  [{2013-11-29}]\url{http://www.sciencemag.org/content/303/5659/799}
+  \end{APACrefURL}
+\newblock
+\APACrefnote{{PMID:} 14764868}
+\newblock
+\begin{APACrefDOI} \doi{10.1126/science.1094068} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Hollander%
+\ \BBA {} Wolfe%
+}{%
+Hollander%
+\ \BBA {} Wolfe%
+}{%
+{\protect \APACyear {1975}}%
+}]{%
+hollander_wolfe_1975}
+\APACinsertmetastar {%
+hollander_wolfe_1975}%
+\begin{APACrefauthors}%
+Hollander, M.%
+\BCBT {}\ \BBA {} Wolfe, D\BPBI A.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1975}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Nonparametric statistical methods} {Nonparametric
+  statistical methods}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Biometrische Zeitschrift}{17}{8}{526--526}.
+\newblock
+\begin{APACrefURL} \url{http://dx.doi.org/10.1002/bimj.19750170808}
+  \end{APACrefURL}
+\newblock
+\begin{APACrefDOI} \doi{10.1002/bimj.19750170808} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Lage%
+\ \protect \BOthers {.}}{%
+Lage%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2007}}%
+}]{%
+lage_human_2007}
+\APACinsertmetastar {%
+lage_human_2007}%
+\begin{APACrefauthors}%
+Lage, K.%
+, Karlberg, E\BPBI O.%
+, Størling, Z\BPBI M.%
+, Ólason, P\BPBI Í.%
+, Pedersen, A\BPBI G.%
+, Rigina, O.%
+\BDBL {}Brunak, S.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2007}{{\APACmonth{03}}}{}.
+\newblock
+{\BBOQ}\APACrefatitle {A human phenome-interactome network of protein complexes
+  implicated in genetic disorders} {A human phenome-interactome network of
+  protein complexes implicated in genetic disorders}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Nature Biotechnology}{25}{3}{309--316}.
+\newblock
+\begin{APACrefURL}
+  [{2013-11-29}]\url{http://www.nature.com.ezp-prod1.hul.harvard.edu/nbt/journal/v25/n3/full/nbt1295.html}
+  \end{APACrefURL}
+\newblock
+\begin{APACrefDOI} \doi{10.1038/nbt1295} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Lamb%
+\ \protect \BOthers {.}}{%
+Lamb%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2006}}%
+}]{%
+lamb_connectivity_2006}
+\APACinsertmetastar {%
+lamb_connectivity_2006}%
+\begin{APACrefauthors}%
+Lamb, J.%
+, Crawford, E\BPBI D.%
+, Peck, D.%
+, Modell, J\BPBI W.%
+, Blat, I\BPBI C.%
+, Wrobel, M\BPBI J.%
+\BDBL {}Golub, T\BPBI R.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2006}{{\APACmonth{09}}}{}.
+\newblock
+{\BBOQ}\APACrefatitle {The Connectivity Map: Using Gene-Expression Signatures
   to Connect Small Molecules, Genes, and Disease} {The connectivity map: Using
-  gene expression signatures to connect small molecules, genes, and
+  gene-expression signatures to connect small molecules, genes, and
   disease}.{\BBCQ}
 \newblock
-\APACjournalVolNumPages{Science}{313}{}{}.
+\APACjournalVolNumPages{Science}{313}{5795}{1929--1935}.
+\newblock
+\begin{APACrefURL}
+  [{2013-10-18}]\url{http://www.sciencemag.org/content/313/5795/1929}
+  \end{APACrefURL}
+\newblock
+\APACrefnote{{PMID:} 17008526}
+\newblock
+\begin{APACrefDOI} \doi{10.1126/science.1132939} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Subramanian%
+\ \protect \BOthers {.}}{%
+Subramanian%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2005}}%
+}]{%
+subramanian_gene_2005}
+\APACinsertmetastar {%
+subramanian_gene_2005}%
+\begin{APACrefauthors}%
+Subramanian, A.%
+, Tamayo, P.%
+, Mootha, V\BPBI K.%
+, Mukherjee, S.%
+, Ebert, B\BPBI L.%
+, Gillette, M\BPBI A.%
+\BDBL {}Mesirov, J\BPBI P.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2005}{{\APACmonth{10}}}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Gene set enrichment analysis: A knowledge-based approach
+  for interpreting genome-wide expression profiles} {Gene set enrichment
+  analysis: A knowledge-based approach for interpreting genome-wide expression
+  profiles}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Proceedings of the National Academy of Sciences of the
+  United States of America}{102}{43}{15545--15550}.
+\newblock
+\begin{APACrefURL} [{2013-10-18}]\url{http://www.pnas.org/content/102/43/15545}
+  \end{APACrefURL}
+\newblock
+\APACrefnote{{PMID:} 16199517}
+\newblock
+\begin{APACrefDOI} \doi{10.1073/pnas.0506580102} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Tissing%
+, Meijerink%
+, den Boer%
+\BCBL {}\ \BBA {} Pieters%
+}{%
+Tissing%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2003}}%
+}]{%
+tissing_molecular_2003}
+\APACinsertmetastar {%
+tissing_molecular_2003}%
+\begin{APACrefauthors}%
+Tissing, W\BPBI J\BPBI E.%
+, Meijerink, J\BPBI P\BPBI P.%
+, den Boer, M\BPBI L.%
+\BCBL {}\ \BBA {} Pieters, R.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2003}{{\APACmonth{01}}}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Molecular determinants of glucocorticoid sensitivity and
+  resistance in acute lymphoblastic leukemia} {Molecular determinants of
+  glucocorticoid sensitivity and resistance in acute lymphoblastic
+  leukemia}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Leukemia}{17}{1}{17--25}.
+\newblock
+\APACrefnote{{PMID:} 12529655}
+\newblock
+\begin{APACrefDOI} \doi{10.1038/sj.leu.2402733} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+van~'t Veer%
+\ \protect \BOthers {.}}{%
+van~'t Veer%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2002}}%
+}]{%
+van_t_veer_gene_2002}
+\APACinsertmetastar {%
+van_t_veer_gene_2002}%
+\begin{APACrefauthors}%
+van~'t Veer, L\BPBI J.%
+, Dai, H.%
+, van~de Vijver, M\BPBI J.%
+, He, Y\BPBI D.%
+, Hart, A\BPBI A\BPBI M.%
+, Mao, M.%
+\BDBL {}Friend, S\BPBI H.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2002}{{\APACmonth{01}}}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Gene expression profiling predicts clinical outcome of
+  breast cancer} {Gene expression profiling predicts clinical outcome of breast
+  cancer}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Nature}{415}{6871}{530--536}.
+\newblock
+\begin{APACrefURL}
+  [{2013-11-10}]\url{http://www.nature.com/nature/journal/v415/n6871/abs/415530a.html}
+  \end{APACrefURL}
+\newblock
+\begin{APACrefDOI} \doi{10.1038/415530a} \end{APACrefDOI}
 \PrintBackRefs{\CurrentBib}
 
 \end{thebibliography}
