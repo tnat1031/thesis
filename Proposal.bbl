@@ -1,6 +1,51 @@
 \begin{thebibliography}{}
 
 \bibitem [\protect \citeauthoryear {%
+Bostock%
+}{%
+Bostock%
+}{%
+{\protect \APACyear {2013}}%
+}]{%
+bostock_d3}
+\APACinsertmetastar {%
+bostock_d3}%
+\begin{APACrefauthors}%
+Bostock, M.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2013}{{\APACmonth{11}}}{}.
+\newblock
+{\BBOQ}\APACrefatitle {D3: Data Driven Documents} {D3: Data driven
+  documents}.{\BBCQ}
+\newblock
+\begin{APACrefURL} \url{http://d3js.org} \end{APACrefURL}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+ECMA%
+}{%
+ECMA%
+}{%
+{\protect \APACyear {1999}}%
+}]{%
+json}
+\APACinsertmetastar {%
+json}%
+\begin{APACrefauthors}%
+ECMA.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1999}{{\APACmonth{12}}}{}.
+\newblock
+{\BBOQ}\APACrefatitle {JSON} {Json}.{\BBCQ}
+\newblock
+\begin{APACrefURL} \url{http://www.json.org} \end{APACrefURL}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
 Friedman%
 }{%
 Friedman%
@@ -139,6 +184,81 @@ Lamb, J.%
 \PrintBackRefs{\CurrentBib}
 
 \bibitem [\protect \citeauthoryear {%
+Lloyd%
+}{%
+Lloyd%
+}{%
+{\protect \APACyear {1982}}%
+}]{%
+lloyd_least_squares_1982}
+\APACinsertmetastar {%
+lloyd_least_squares_1982}%
+\begin{APACrefauthors}%
+Lloyd, S\BPBI P.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{1982}{{\APACmonth{03}}}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Least squares quantization in PCM} {Least squares
+  quantization in pcm}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{IEEE Transactions on Information Theory}{IT-28}{}{}.
+\newblock
+\begin{APACrefURL}
+  [{2013-11-29}]\url{http://www.cs.nyu.edu/~roweis/csc2515-2006/readings/lloyd57.pdf}
+  \end{APACrefURL}
+\newblock
+\begin{APACrefDOI} \doi{10.1109/TIT.1982.1056489} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+MongoDB%
+}{%
+MongoDB%
+}{%
+{\protect \APACyear {2013}}%
+}]{%
+mongodb}
+\APACinsertmetastar {%
+mongodb}%
+\begin{APACrefauthors}%
+MongoDB.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2013}{{\APACmonth{11}}}{}.
+\newblock
+{\BBOQ}\APACrefatitle {MongoDB} {Mongodb}.{\BBCQ}
+\newblock
+\begin{APACrefURL} \url{http://www.mongodb.org} \end{APACrefURL}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Mozilla%
+}{%
+Mozilla%
+}{%
+{\protect \APACyear {2013}}%
+}]{%
+mozilla_javascript}
+\APACinsertmetastar {%
+mozilla_javascript}%
+\begin{APACrefauthors}%
+Mozilla.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2013}{{\APACmonth{11}}}{}.
+\newblock
+{\BBOQ}\APACrefatitle {JavaScript} {Javascript}.{\BBCQ}
+\newblock
+\begin{APACrefURL}
+  \url{https://developer.mozilla.org/en-US/docs/Web/JavaScript}
+  \end{APACrefURL}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
 Subramanian%
 \ \protect \BOthers {.}}{%
 Subramanian%
@@ -246,6 +366,30 @@ van~'t Veer, L\BPBI J.%
   \end{APACrefURL}
 \newblock
 \begin{APACrefDOI} \doi{10.1038/415530a} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+W3C%
+}{%
+W3C%
+}{%
+{\protect \APACyear {2011}}%
+}]{%
+w3c_html5}
+\APACinsertmetastar {%
+w3c_html5}%
+\begin{APACrefauthors}%
+W3C.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2011}{{\APACmonth{04}}}{}.
+\newblock
+{\BBOQ}\APACrefatitle {HTML5 Differences from HTML4} {Html5 differences from
+  html4}.{\BBCQ}
+\newblock
+\begin{APACrefURL} \url{http://www.w3.org/TR/2011/WD-html5-diff-20110405/}
+  \end{APACrefURL}
 \PrintBackRefs{\CurrentBib}
 
 \end{thebibliography}

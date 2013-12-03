@@ -13,44 +13,70 @@ Reallocated wiz_functions (elt_size=4) to 9000 items from 6000.
 Reallocated singl_function (elt_size=4) to 100 items from 50.
 Database file #1: Proposal.bib
 apacite.bst [2013/07/21 v6.03 APA bibliography style]
-You've used 7 entries,
+Warning--No journal in bostock_d3
+ptr=1, stack=
+
+---the literal stack isn't empty for entry bostock_d3
+while executing---line 5079 of file apacite.bst
+Warning--No journal in json
+ptr=1, stack=
+
+---the literal stack isn't empty for entry json
+while executing---line 5079 of file apacite.bst
+Warning--No journal in mongodb
+ptr=1, stack=
+
+---the literal stack isn't empty for entry mongodb
+while executing---line 5079 of file apacite.bst
+Warning--No journal in mozilla_javascript
+ptr=1, stack=
+
+---the literal stack isn't empty for entry mozilla_javascript
+while executing---line 5079 of file apacite.bst
+Warning--No journal in w3c_html5
+ptr=1, stack=
+
+---the literal stack isn't empty for entry w3c_html5
+while executing---line 5079 of file apacite.bst
+You've used 13 entries,
             6951 wiz_defined-function locations,
-            1340 strings with 13500 characters,
-and the built_in function-call counts, 17715 in all, are:
-= -- 2099
-> -- 155
-< -- 891
-+ -- 1092
-- -- 14
-* -- 1269
-:= -- 3312
-add.period$ -- 24
-call.type$ -- 7
-change.case$ -- 131
+            1370 strings with 14025 characters,
+and the built_in function-call counts, 25333 in all, are:
+= -- 3038
+> -- 215
+< -- 1149
++ -- 1282
+- -- 34
+* -- 1685
+:= -- 4519
+add.period$ -- 48
+call.type$ -- 13
+change.case$ -- 245
 chr.to.int$ -- 0
-cite$ -- 14
-duplicate$ -- 581
-empty$ -- 642
-format.name$ -- 311
-if$ -- 3140
+cite$ -- 31
+duplicate$ -- 759
+empty$ -- 1053
+format.name$ -- 395
+if$ -- 4746
 int.to.chr$ -- 0
-int.to.str$ -- 21
+int.to.str$ -- 39
 missing$ -- 0
-newline$ -- 224
-num.names$ -- 56
-pop$ -- 228
+newline$ -- 360
+num.names$ -- 104
+pop$ -- 347
 preamble$ -- 1
-purify$ -- 40
+purify$ -- 76
 quote$ -- 0
-skip$ -- 969
+skip$ -- 1664
 stack$ -- 0
-substring$ -- 1195
-swap$ -- 316
-text.length$ -- 26
+substring$ -- 1413
+swap$ -- 431
+text.length$ -- 54
 text.prefix$ -- 0
 top$ -- 1
-type$ -- 560
-warning$ -- 0
-while$ -- 114
+type$ -- 1040
+warning$ -- 5
+while$ -- 156
 width$ -- 0
-write$ -- 282
+write$ -- 430
+(There were 5 error messages)
