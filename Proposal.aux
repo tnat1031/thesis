@@ -2,42 +2,48 @@
 \@writefile{toc}{\contentsline {section}{\numberline {1}The Research Problem}{1}}
 \citation{tissing_molecular_2003}
 \citation{lamb_connectivity_2006}
-\citation{van_t_veer_gene_2002}
 \@writefile{toc}{\contentsline {section}{\numberline {2}Key Terms}{3}}
-\citation{subramanian_gene_2005}
+\citation{van_t_veer_gene_2002}
 \@writefile{toc}{\contentsline {section}{\numberline {3}Background}{4}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Gene Expression Profiling}{4}}
+\citation{subramanian_gene_2005}
 \citation{hollander_wolfe_1975}
 \citation{subramanian_gene_2005}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Gene Set Enrichment Analysis (GSEA)}{5}}
 \citation{lamb_connectivity_2006}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.3}The Connectivity Map}{6}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.1}Computing Connections in the Connectivity Map}{6}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.1}Computing Connections in the Connectivity Map}{7}}
 \citation{friedman_inferring_2004}
 \citation{lage_human_2007}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Graphical Depictions of Biological Phenomena}{8}}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces An example of a graph. The six nodes are connected by seven edges. All nodes other than node 6 have at least two edges.}}{8}}
-\newlabel{fig:graph}{{1}{8}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces An example of a graph. The six nodes are connected by seven edges. All nodes other than node 6 have at least two edges.}}{9}}
+\newlabel{fig:graph}{{1}{9}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.1}Proposed use of Graphs in This Work}{9}}
 \citation{lloyd_least_squares_1982}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Approach for This Work}{9}}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Methods}{9}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Computing Connections}{9}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces The App}}{10}}
-\newlabel{fig:app_mockup}{{2}{10}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Methods}{10}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Computing Connections and Visualizing Connections}{10}}
 \citation{w3c_html5}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces The App}}{11}}
+\newlabel{fig:app_mockup}{{2}{11}}
 \citation{mozilla_javascript}
 \citation{bostock_d3}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Software Components}{11}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.1}Front End: HTML \& D3.js}{11}}
 \citation{mongodb}
 \citation{json}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces A graph generated using D3.js}}{12}}
-\newlabel{fig:d3_graph_example}{{3}{12}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.2}Back End: Node.js \& MongoDB}{12}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces A word cloud generated using D3.js}}{13}}
-\newlabel{fig:d3_word_cloud_example}{{4}{13}}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Potential Challenges}{15}}
-\@writefile{toc}{\contentsline {section}{\numberline {6}Preliminary Timeline}{15}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Software Components}{12}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.1}Front End: HTML \& D3.js}{12}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces A graph generated using D3.js}}{13}}
+\newlabel{fig:d3_graph_example}{{3}{13}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.2}Back End: Node.js \& MongoDB}{13}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces A word cloud generated using D3.js}}{14}}
+\newlabel{fig:d3_word_cloud_example}{{4}{14}}
+\citation{node}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces  Application data flow diagram. The application receives a list of signatures from the user. It then sends a query for these signatures' connectivity scores to Node.js. Node.js receives the query, passes it to MongoDB, and waits for the response. Once the JSON response is received, Node.js passes it back to the application for visualization.}}{16}}
+\newlabel{fig:app_data_flow}{{5}{16}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Potential Challenges}{16}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Storing Entire Connectivity Matrix in MongoDB}{16}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Displaying Large Graphs in a Web Browser}{17}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Incorporation of Signature Metadata}{18}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Preliminary Timeline}{19}}
 \bibstyle{apacite}
 \bibdata{Proposal}
 \bibcite{bostock_d3}{\citeauthoryear {Bostock}{Bostock}{{\APACyear {2013}}}}
@@ -52,13 +58,15 @@
 \APACbibcite{lage_human_2007}{\citeauthoryear {Lage\ \BOthers {.}}{Lage\ \BOthers {.}}{{\APACyear {2007}}}}
 \bibcite{lamb_connectivity_2006}{\citeauthoryear {Lamb\ \BOthers {.}}{Lamb\ \BOthers {.}}{{\APACyear {2006}}}}
 \APACbibcite{lamb_connectivity_2006}{\citeauthoryear {Lamb\ \BOthers {.}}{Lamb\ \BOthers {.}}{{\APACyear {2006}}}}
-\@writefile{toc}{\contentsline {section}{References}{16}}
+\@writefile{toc}{\contentsline {section}{References}{20}}
 \bibcite{lloyd_least_squares_1982}{\citeauthoryear {Lloyd}{Lloyd}{{\APACyear {1982}}}}
 \APACbibcite{lloyd_least_squares_1982}{\citeauthoryear {Lloyd}{Lloyd}{{\APACyear {1982}}}}
 \bibcite{mongodb}{\citeauthoryear {MongoDB}{MongoDB}{{\APACyear {2013}}}}
 \APACbibcite{mongodb}{\citeauthoryear {MongoDB}{MongoDB}{{\APACyear {2013}}}}
 \bibcite{mozilla_javascript}{\citeauthoryear {Mozilla}{Mozilla}{{\APACyear {2013}}}}
 \APACbibcite{mozilla_javascript}{\citeauthoryear {Mozilla}{Mozilla}{{\APACyear {2013}}}}
+\bibcite{node}{\citeauthoryear {Node}{Node}{{\APACyear {2013}}}}
+\APACbibcite{node}{\citeauthoryear {Node}{Node}{{\APACyear {2013}}}}
 \bibcite{subramanian_gene_2005}{\citeauthoryear {Subramanian\ \BOthers {.}}{Subramanian\ \BOthers {.}}{{\APACyear {2005}}}}
 \APACbibcite{subramanian_gene_2005}{\citeauthoryear {Subramanian\ \BOthers {.}}{Subramanian\ \BOthers {.}}{{\APACyear {2005}}}}
 \bibcite{tissing_molecular_2003}{\citeauthoryear {Tissing, Meijerink, den Boer,{}\ \BBA{} Pieters}{Tissing\ \BOthers {.}}{{\APACyear {2003}}}}

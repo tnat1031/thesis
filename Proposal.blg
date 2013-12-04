@@ -33,50 +33,55 @@ ptr=1, stack=
 
 ---the literal stack isn't empty for entry mozilla_javascript
 while executing---line 5079 of file apacite.bst
+Warning--No journal in node
+ptr=1, stack=
+
+---the literal stack isn't empty for entry node
+while executing---line 5079 of file apacite.bst
 Warning--No journal in w3c_html5
 ptr=1, stack=
 
 ---the literal stack isn't empty for entry w3c_html5
 while executing---line 5079 of file apacite.bst
-You've used 13 entries,
+You've used 14 entries,
             6951 wiz_defined-function locations,
-            1370 strings with 14025 characters,
-and the built_in function-call counts, 25333 in all, are:
-= -- 3038
-> -- 215
-< -- 1149
-+ -- 1282
-- -- 34
-* -- 1685
-:= -- 4519
-add.period$ -- 48
-call.type$ -- 13
-change.case$ -- 245
+            1374 strings with 14061 characters,
+and the built_in function-call counts, 26488 in all, are:
+= -- 3182
+> -- 225
+< -- 1184
++ -- 1299
+- -- 38
+* -- 1741
+:= -- 4684
+add.period$ -- 52
+call.type$ -- 14
+change.case$ -- 264
 chr.to.int$ -- 0
-cite$ -- 31
-duplicate$ -- 759
-empty$ -- 1053
-format.name$ -- 395
-if$ -- 4746
+cite$ -- 34
+duplicate$ -- 787
+empty$ -- 1120
+format.name$ -- 409
+if$ -- 5004
 int.to.chr$ -- 0
-int.to.str$ -- 39
+int.to.str$ -- 42
 missing$ -- 0
-newline$ -- 360
-num.names$ -- 104
-pop$ -- 347
+newline$ -- 382
+num.names$ -- 112
+pop$ -- 368
 preamble$ -- 1
-purify$ -- 76
+purify$ -- 82
 quote$ -- 0
-skip$ -- 1664
+skip$ -- 1778
 stack$ -- 0
-substring$ -- 1413
-swap$ -- 431
-text.length$ -- 54
+substring$ -- 1434
+swap$ -- 449
+text.length$ -- 59
 text.prefix$ -- 0
 top$ -- 1
-type$ -- 1040
-warning$ -- 5
-while$ -- 156
+type$ -- 1120
+warning$ -- 6
+while$ -- 163
 width$ -- 0
-write$ -- 430
-(There were 5 error messages)
+write$ -- 454
+(There were 6 error messages)
