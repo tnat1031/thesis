@@ -109,6 +109,29 @@ Hollander, M.%
 \PrintBackRefs{\CurrentBib}
 
 \bibitem [\protect \citeauthoryear {%
+Institute%
+}{%
+Institute%
+}{%
+{\protect \APACyear {2013}}%
+}]{%
+msigdb_website}
+\APACinsertmetastar {%
+msigdb_website}%
+\begin{APACrefauthors}%
+Institute, T\BPBI B.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2013}{{\APACmonth{05}}}{}.
+\newblock
+{\BBOQ}\APACrefatitle {MSigDB} {Msigdb}.{\BBCQ}
+\newblock
+\begin{APACrefURL} \url{http://www.broadinstitute.org/gsea/msigdb/index.jsp}
+  \end{APACrefURL}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
 Lage%
 \ \protect \BOthers {.}}{%
 Lage%
@@ -317,6 +340,41 @@ Subramanian, A.%
 \APACrefnote{{PMID:} 16199517}
 \newblock
 \begin{APACrefDOI} \doi{10.1073/pnas.0506580102} \end{APACrefDOI}
+\PrintBackRefs{\CurrentBib}
+
+\bibitem [\protect \citeauthoryear {%
+Tibshirani%
+, Walther%
+\BCBL {}\ \BBA {} Hastie%
+}{%
+Tibshirani%
+\ \protect \BOthers {.}}{%
+{\protect \APACyear {2001}}%
+}]{%
+tibshirani_estimating_2001}
+\APACinsertmetastar {%
+tibshirani_estimating_2001}%
+\begin{APACrefauthors}%
+Tibshirani, R.%
+, Walther, G.%
+\BCBL {}\ \BBA {} Hastie, T.%
+\end{APACrefauthors}%
+\unskip\
+\newblock
+\APACrefYearMonthDay{2001}{}{}.
+\newblock
+{\BBOQ}\APACrefatitle {Estimating the number of clusters in a data set via the
+  gap statistic} {Estimating the number of clusters in a data set via the gap
+  statistic}.{\BBCQ}
+\newblock
+\APACjournalVolNumPages{Journal of the Royal Statistical Society: Series B
+  (Statistical Methodology)}{63}{2}{411?423}.
+\newblock
+\begin{APACrefURL}
+  [{2013-11-29}]\url{http://onlinelibrary.wiley.com/doi/10.1111/1467-9868.00293/abstract}
+  \end{APACrefURL}
+\newblock
+\begin{APACrefDOI} \doi{10.1111/1467-9868.00293} \end{APACrefDOI}
 \PrintBackRefs{\CurrentBib}
 
 \bibitem [\protect \citeauthoryear {%
