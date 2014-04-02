@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="d3.v2.js"></script>
+<style type="text/css">
+.hover { pointer-events: none; fill: red; }
+.circle,.link { opacity: 1; }
+</style>
+</head>
+<body>
+<script type="text/javascript">
+
+var w = 1000,
+    h = 1000;
+
+var vis = d3.select("body").append("svg:svg")
+    .attr("width", w)
+    .attr("height", h);
+
+d3.json("combined_links.json", function(links) {
+	d3.json("nodes.json", function(nodes) {
+	
+		var force = self.force = d3.layout.force()
+			.nodes(nodes)
+			.links([])
+			.linkDistance(function (d) {return d.value;})
+			.gravity(.5)
+			.friction(0.9)
+			.charge(-200)
+			.size([w, h]);
+		 
+		vis.append("g")
+			.attr("class","links");
+		var link_container = vis.select("g.links")
+		var link = link_container.selectAll("line.link")
+		var node = vis.selectAll("g.node");
+		
+		
+		//links on
+		var links_bool = false;
+		link_container.selectAll("text.link_on")
+			.data([1])
+			.enter().append("svg:text")
+			.attr("x",200)
+			.attr("y",30)
+			.attr("class","link_on")
+			.attr("font-weight","bold")
+			.text("Show Links")
+			.on("click",toggle_links);	
+				
+		//use target links
+		var target_bool = false;
+		link_container.selectAll("text.use_targets")
+			.data([1])
+			.enter().append("svg:text")
+			.attr("x",20)
+			.attr("y",60)
+			.attr("class","use_targets")
+			.attr("font-weight","bold")
+			.text("use target links")
+			.on("click",toggle_targets);
+			
+		//use target links
+		var pathway_bool = false;
+		link_container.selectAll("text.use_pathways")
+			.data([1])
+			.enter().append("svg:text")
+			.attr("x",20)
+			.attr("y",90)
+			.attr("class","use_pathways")
+			.attr("font-weight","bold")
+			.text("use pathway links")
+			.on("click",toggle_pathways);
+
+		node = vis.selectAll("circle")
+			.data(nodes)
+			  .enter().append("circle")
+				.call(force.drag)
+				.attr("class", "circle")
+				.attr("cx", "0")
+				.attr("cy", "0")
+				.attr("r", function (d) {return (d.rank*5)+2;})
+				.attr("name", function (d) {return d.name;})
+				.on("mouseover",mouse_over)
+				.on("mouseout",mouse_out);
+
+		force.start();
+		
+		force.on("tick", function() {  	
+			node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+			//update links
+			try{
+				link = link_container.selectAll("line.link")
+				link.attr("x1", function(d) { return d.source.x; })
+					.attr("y1", function(d) { return d.source.y; })
+					.attr("x2", function(d) { return d.target.x; })
+					.attr("y2", function(d) { return d.target.y; })
+			}
+			catch(err){
+			}
+		});
+		
+	function mouse_over(){
+	var x_data = d3.select(this).attr("x");
+	var y_data = d3.select(this).attr("y");
+	var name = d3.select(this).attr("name");
+	
+	//hover sample text
+	vis.selectAll("text.hover")
+		.data([1])
+		.enter().append("svg:text")
+		.attr("x",30)
+		.attr("y",30)
+		.attr("class","hover")
+		.attr("font-weight","bold")
+		.text(name);
+	}
+	
+	//clear all mousever effects on mouseout
+	function mouse_out(d){
+		vis.selectAll("text.hover")
+		.data([])
+		.exit().remove();
+	};
+	
+	//toggle links
+	function toggle_links(){
+		links_bool = !links_bool;
+		if (links_bool){
+			links_on();
+		}
+		else{
+			links_off();
+		}
+	}
+	
+	function links_on(){
+		links_off();
+			if (links_bool){
+				link = link_container.selectAll("line.link")
+				link.data(force.links())
+				.enter().append("svg:line")
+				.attr("class", "link")
+				.attr("style",function(d) {return "stroke: " + d.color;})
+				.attr("x1", function(d) { return d.source.x; })
+				.attr("y1", function(d) { return d.source.y; })
+				.attr("x2", function(d) { return d.target.x; })
+				.attr("y2", function(d) { return d.target.y; });
+			}
+	};
+	
+	//disable links
+	function links_off(){
+		link = vis.selectAll("line.link")
+		link.data([])
+		.exit().remove();
+	}
+	
+	//toggle target links
+	function toggle_targets(){
+		if (target_bool){
+			target_bool = false;
+		}
+		else{
+			target_bool = true;
+		}
+		update_link_structure();
+		links_on();
+	}
+	
+	//toggle pathway links
+	function toggle_pathways(){
+		if (pathway_bool){
+			pathway_bool = false;
+		}
+		else{
+			pathway_bool = true;
+		}		
+		update_link_structure();
+		links_on();
+	}
+	
+	function update_link_structure(){
+		link_array = []
+		if (pathway_bool){
+			link_array = link_array.concat(links.pathways);
+		}	
+		if (target_bool){
+			link_array = link_array.concat(links.targets);
+		}
+		force.links(link_array);
+		force.start()
+	}
+	
+	});    
+});
+
+</script>
+</body>
+</html>

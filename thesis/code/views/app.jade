@@ -1,0 +1,23 @@
+doctype 5
+html(lang="en")
+  head
+    title= appName
+    link(rel='stylesheet', href='http://netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css')
+    link(rel='stylesheet', href='http://cmap.github.io/barista/barista.main.min.css')
+  body
+    <!-- header view target -->
+    .cmap-shadow
+      #header_target
+
+    <!-- put your content here -->
+    .row
+      .col-lg-offset-1.col-lg-10
+        h2.cmap-center-text Your app content goes here
+
+    <!-- footer view target -->
+    #footer_target
+  script(src='http://cmap.github.io/barista/barista.main.min.js')
+  != '<script type="text/javascript">'
+  != 'CMapHeaderView = new Barista.Views.CMapHeaderView({el: $("#header_target"),title: "' + appName + '",subtitle: "' + appDescription + '"});'
+  != 'CMapFooterView = new Barista.Views.CMapFooterView({el: $("#footer_target")});'
+  != '</script>'

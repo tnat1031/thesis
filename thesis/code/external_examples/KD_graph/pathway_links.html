@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="d3.v2.js"></script>
+<style type="text/css">
+.hover { pointer-events: none; fill: red; }
+</style>
+</head>
+<body>
+<script type="text/javascript">
+
+var w = 1000,
+    h = 1000;
+
+var vis = d3.select("body").append("svg:svg")
+    .attr("width", w)
+    .attr("height", h);
+
+d3.json("pathway_links.json", function(links) {
+	d3.json("nodes.json", function(nodes) {
+	
+		var force = self.force = d3.layout.force()
+			.nodes(nodes)
+			.links(links)
+			.linkDistance(function (d) {return d.value;})
+			.gravity(.5)
+			.friction(0.9)
+			.charge(-200)
+			.size([w, h]);
+		 
+		vis.append("g")
+			.attr("class","links");
+		var link_container = vis.select("g.links")
+		var link = link_container.selectAll("line.link")
+		var node = vis.selectAll("g.node");
+		
+		
+		//links on
+		link_container.selectAll("text.link_on")
+			.data([1])
+			.enter().append("svg:text")
+			.attr("x",200)
+			.attr("y",30)
+			.attr("class","link_on")
+			.attr("font-weight","bold")
+			.text("Show Links")
+			.on("click",links_on);		
+
+		//links on
+		link_container.selectAll("text.link_off")
+			.data([1])
+			.enter().append("svg:text")
+			.attr("x",400)
+			.attr("y",30)
+			.attr("class","link_off")
+			.attr("font-weight","bold")
+			.text("hide Links")
+			.on("click",links_off);
+				
+
+		node = vis.selectAll("g.node")
+			.data(nodes)
+			  .enter().append("svg:g")
+				.attr("class", "node")
+				.call(force.drag)
+				.append("svg:image")
+				.attr("class", "circle")
+				.attr("xlink:href", "node.png")
+				.attr("x", "0")
+				.attr("y", "0")
+				.attr("width", "10px")
+				.attr("height", "10px")
+				.attr("name", function (d) {return d.name;})
+				.on("mouseover",mouse_over)
+				.on("mouseout",mouse_out);
+
+		force.start();
+		
+		force.on("tick", function() {  	
+			node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+			//update links
+			try{
+				link = link_container.selectAll("line.link")
+				link.attr("x1", function(d) { return d.source.x+5; })
+					.attr("y1", function(d) { return d.source.y+5; })
+					.attr("x2", function(d) { return d.target.x+5; })
+					.attr("y2", function(d) { return d.target.y+5; })
+			}
+			catch(err){
+			}
+		});
+		
+	function mouse_over(){
+	var x_data = d3.select(this).attr("x");
+	var y_data = d3.select(this).attr("y");
+	var name = d3.select(this).attr("name");
+	
+	//hover sample text
+	vis.selectAll("text.hover")
+		.data([1])
+		.enter().append("svg:text")
+		.attr("x",30)
+		.attr("y",30)
+		.attr("class","hover")
+		.attr("font-weight","bold")
+		.text(name);
+	}
+	
+	//clear all mousever effects on mouseout
+	function mouse_out(d){
+		vis.selectAll("text.hover")
+		.data([])
+		.exit().remove();
+	};
+	
+	//enable links
+	function links_on(){
+		link = link_container.selectAll("line.link")
+		link.data(links)
+		.enter().append("svg:line")
+		.attr("class", "link")
+		.attr("style",function(d) {return "stroke: " + d.color;})
+		.attr("x1", function(d) { return d.source.x+5; })
+		.attr("y1", function(d) { return d.source.y+5; })
+		.attr("x2", function(d) { return d.target.x+5; })
+		.attr("y2", function(d) { return d.target.y+5; });
+	};
+	
+	//disable links
+	function links_off(){
+		link = vis.selectAll("line.link")
+		link.data([])
+		.exit().remove();
+	}
+	
+	});    
+});
+
+</script>
+</body>
+</html>

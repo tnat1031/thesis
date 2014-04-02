@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>qviz</title>
+    <link rel="stylesheet" href="css/qviz.css">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css">
+    <link rel="stylesheet" href="http://cmap.github.io/barista/barista.main.min.css">
+  </head>
+  <body><!-- header view target -->
+    <div class="cmap-shadow">
+      <div id="header_target"></div>
+    </div><!-- put your content here -->
+  <div style="min-height:30px"></div>
+    <div class="row">
+      <div class="col-lg-offset-1 col-lg-10" id="content">
+        <div class="row" id="inputs">
+            <div class="col-lg-5" id="textarea_input">
+                <form class="form-horizontal">
+                    <fieldset>
+
+                    <!-- Textarea -->
+                    <div class="form-group">
+                      <label class="col-md-4 control-label" for="textarea">Signatures of Interest:</label>
+                      <div class="col-md-4">
+                        <textarea class="form-control" id="textarea" name="textarea"></textarea>
+                      </div>
+                    </div>
+
+                    </fieldset>
+
+                    <!-- Button -->
+                    <div class="form-group">
+                      <label class="col-md-4 control-label" for="singlebutton"></label>
+                      <div class="col-md-4">
+                        <button name="singlebutton" class="btn btn-info" id="submit" type="button">Submit</button>
+                        <button name="singlebutton" class="btn btn-default" id="clear" type="button">Clear</button>
+                      </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4" id="tag_cloud">
+
+            </div>
+            <div class="col-lg-5 col-lg-offset-1" id="graph">
+
+            </div>
+        </div>
+      </div>
+    </div><!-- footer view target -->
+    <div id="footer_target"></div>
+  </body>
+  <script src="http://cmap.github.io/barista/barista.main.min.js"></script>
+  <!--<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>-->
+  <script type="text/javascript">
+    CMapHeaderView = new Barista.Views.CMapHeaderView({el: $("#header_target"),title: "qviz",subtitle: "visualizing cmap query results"});
+    CMapFooterView = new Barista.Views.CMapFooterView({el: $("#footer_target")});
+
+    // parse input from textarea
+    $("#submit").click(function(event) {
+        var lines = $("#textarea").val().split("\n");
+        console.log(lines);
+        lines.forEach(function(entry) {
+            d3.select("#" + entry)
+                    .attr("fill", "red");
+        })
+    })
+
+    // clear any selections
+    $("#clear").click(function(event) {
+        $("#textarea").val("");
+        d3.selectAll(".node")
+                .attr("fill", "black");
+    })
+
+//    generating force-directed graph
+    var width = 960,
+    height = 500;
+
+    var node_color = d3.scale.category20();
+    var edge_color = {"pos": "red",
+                        "neg": "blue"};
+
+    var force = d3.layout.force()
+        .charge(-1000)
+        .size([width, height]);
+
+    var svg = d3.select("#graph").append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+    d3.json("data/test.json", function(error, graph) {
+      console.log(graph);
+        force
+          .nodes(graph.nodes)
+          .links(graph.edges)
+                .linkDistance(function(d) { return (100 - d.score); }) // assume scores are rankpoints
+          .start();
+
+      var link = svg.selectAll(".link")
+          .data(graph.edges)
+        .enter().append("line")
+          .attr("class", "link")
+              .style("stroke", function(d) { return edge_color[d.direction]; })
+          .style("stroke-width", 3);
+
+      var node = svg.selectAll(".node")
+          .data(graph.nodes)
+        .enter().append("circle")
+          .attr("class", "node")
+              .attr("id", function(d) { return d.id; })
+//              .attr("fill", function(d) { return node_color(d.id); })
+          .attr("r", 10)
+            .call(force.drag);
+
+      node.append("title")
+          .text(function(d) { return d.id; });
+
+      force.on("tick", function() {
+        link.attr("x1", function(d) { return d.source.x; })
+            .attr("y1", function(d) { return d.source.y; })
+            .attr("x2", function(d) { return d.target.x; })
+            .attr("y2", function(d) { return d.target.y; });
+
+        node.attr("cx", function(d) { return d.x; })
+            .attr("cy", function(d) { return d.y; });
+      });
+    });
+
+//    generating tag cloud
+//      var fill = d3.scale.category20();
+//
+//      d3.layout.cloud().size([300, 300])
+//          .words([
+//            "HDAC inhibitor", "histone", "vorinostat", "panobinostat", "HDAC3", "HDAC6", "trichostatin-a","romidepsin"].map(function(d) {
+//            return {text: d, size: 10 + Math.random() * 50};
+//          }))
+//          .rotate(function() { return ~~(Math.random() * 2) * 90; })
+//          .font("Impact")
+//          .fontSize(function(d) { return d.size; })
+//          .on("end", draw)
+//          .start();
+//
+//      function draw(words) {
+//        d3.select("#tag_cloud").append("svg")
+//            .attr("width", 300)
+//            .attr("height", 300)
+//          .append("g")
+//            .attr("transform", "translate(150,150)")
+//          .selectAll("text")
+//            .data(words)
+//          .enter().append("text")
+//            .style("font-size", function(d) { return d.size + "px"; })
+//            .style("font-family", "Impact")
+//            .style("fill", function(d, i) { return fill(i); })
+//            .attr("text-anchor", "middle")
+//            .attr("transform", function(d) {
+//              return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+//            })
+//            .text(function(d) { return d.text; });
+//      }
+
+  </script>
+</html>
