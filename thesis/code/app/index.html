@@ -39,7 +39,7 @@
                 </form>
             </div>
         </div>
-        <div style="min-height:30px"></div>  
+        <div style="min-height:30px"></div>
         <div class="row">
 <!--
             <div class="col-lg-4" id="tag_cloud">
@@ -93,7 +93,7 @@
         .attr("width", width)
         .attr("height", height);
 
-    d3.json("/get_connections/connections/50/20", function(error, graph) {
+    d3.json("/get_connections/connections?poscon=HDAC_with_small_cluster", function(error, graph) {
       console.log(graph);
         force
           .nodes(graph.nodes)
