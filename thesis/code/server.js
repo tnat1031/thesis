@@ -136,6 +136,7 @@ function make_nodes_and_edges(docs, connection_thresh) {
     // var nodes_only = typeof(nodes_only) !== 'undefined' ? nodes_only : false;
     // var edges_only = typeof(egdes_only) !== 'undefined' ? edges_only : false;
     var seen_perts = [];
+    var seen_combos = [];
     var nodes = [];
     var edges = [];
     var indices = {};
@@ -145,27 +146,32 @@ function make_nodes_and_edges(docs, connection_thresh) {
         var pert_iname_x = doc.pert_iname_x;
         var pert_iname_y = doc.pert_iname_y;
         if (pert_iname_x !== pert_iname_y) {
-            if (seen_perts.indexOf(pert_iname_x) == -1) {
-                // pert_iname_x hasn't been seen yet
-                seen_perts.push(pert_iname_x);
-                nodes.push( {"id": pert_iname_x} );
-                indices[pert_iname_x] = nodes.length - 1;
-            }
-            if (seen_perts.indexOf(pert_iname_y) == -1) {
-                // pert_iname_y hasn't been seen yet
-                seen_perts.push(pert_iname_y);
-                nodes.push( {"id": pert_iname_y} );
-                indices[pert_iname_y] = nodes.length - 1;
-            }
-            if (Math.abs(score) >= connection_thresh) {
-                // score is high enough, add an edge
-                var edge = {
-                    "source": indices[pert_iname_x],
-                    "target": indices[pert_iname_y],
-                    "score": score,
-                    "direction": score > 0 ? "pos" : "neg"
+            var combo = [pert_iname_x, pert_iname_y].sort().join(":");
+            if (seen_combos.indexOf(combo) == -1) {
+                // haven't seen this combo yet, continue on and form a node/edge if appropriate
+                seen_combos.push(combo);
+                if (seen_perts.indexOf(pert_iname_x) == -1) {
+                    // pert_iname_x hasn't been seen yet
+                    seen_perts.push(pert_iname_x);
+                    nodes.push( {"id": pert_iname_x} );
+                    indices[pert_iname_x] = nodes.length - 1;
                 }
-                edges.push(edge);
+                if (seen_perts.indexOf(pert_iname_y) == -1) {
+                    // pert_iname_y hasn't been seen yet
+                    seen_perts.push(pert_iname_y);
+                    nodes.push( {"id": pert_iname_y} );
+                    indices[pert_iname_y] = nodes.length - 1;
+                }
+                if (Math.abs(score) >= connection_thresh) {
+                    // score is high enough, add an edge
+                    var edge = {
+                        "source": indices[pert_iname_x],
+                        "target": indices[pert_iname_y],
+                        "score": score,
+                        "direction": score > 0 ? "pos" : "neg"
+                    }
+                    edges.push(edge);
+                }
             }
         }
     }
