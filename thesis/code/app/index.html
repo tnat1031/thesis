@@ -130,7 +130,7 @@
       force
           .nodes(nodes)
           .links(edges)
-                .linkDistance(function(d) { return (100 - d.score); }) // assume scores are rankpoints
+                .linkDistance(function(d) { return (100 - d.score + 100); }) // assume scores are rankpoints
           .start();
 
       var link = svg.selectAll(".link")
@@ -194,7 +194,8 @@
         console.log(lines);
         lines.forEach(function(entry) {
             d3.select("#" + entry)
-                    .attr("fill", "red");
+                    .attr("fill", "green")
+                    .attr("r", 10);
         })
     })
 
@@ -202,7 +203,8 @@
     $("#clear").click(function(event) {
         $("#textarea").val("");
         d3.selectAll(".node")
-                .attr("fill", "black");
+                .attr("fill", "black")
+                .attr("r", 6);
     })
 
     // process input from poscon set dropdown
