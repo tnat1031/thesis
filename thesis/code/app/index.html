@@ -9,20 +9,25 @@
   <body><!-- header view target -->
     <div class="cmap-shadow">
       <div id="header_target"></div>
-    </div><!-- put your content here -->
+    </div>
+
   <div style="min-height:30px"></div>
     <div class="row">
       <div class="col-lg-offset-1 col-lg-10" id="content">
         <div class="row" id="inputs">
+            <!-- inputs for highlighting -->
             <div class="col-lg-5" id="textarea_input">
                 <form class="form-horizontal">
                     <fieldset>
 
+                    <!-- form title -->
+                    <legend>Input Node Names to Hightlight</legend>    
+                    
                     <!-- Textarea -->
                     <div class="form-group">
-                      <label class="col-md-4 control-label" for="textarea">Signatures of Interest:</label>
+                      <label class="col-md-4 control-label" for="highlight">Nodes of Interest:</label>
                       <div class="col-md-4">
-                        <textarea class="form-control" id="textarea" name="textarea"></textarea>
+                        <textarea class="form-control" id="highlight" name="highlight"></textarea>
                       </div>
                     </div>
 
@@ -38,7 +43,55 @@
                     </div>
                 </form>
             </div>
-        </div>
+            <!-- inputs for redrawing  -->
+            <div>
+              <form class="form-horizontal">
+                <fieldset>
+
+                <!-- Form Name -->
+                <legend>Select Graph Parameters</legend>
+
+                <!-- Select Basic -->
+                <div class="form-group">
+                  <label class="col-md-4 control-label" for="poscon">Poscon Set:</label>
+                  <div class="col-md-4">
+                    <select id="poscon" name="poscon" class="form-control">
+                      <option value="HDAC_plus_PI3K_inhibitor">HDAC inhibitors & PI3K inhibitors</option>
+                      <option value="HDAC_inhibitor">HDAC inhibitors</option>
+                      <option value="HDAC_plus_random">HDAC inhibitors & random</option>
+                    </select>
+                  </div>
+                </div>
+
+
+                <!-- Textarea -->
+                <div class="form-group">
+                  <label class="col-md-4 control-label" for="nodes">Nodes of to Include:</label>
+                  <div class="col-md-4">
+                    <textarea class="form-control" id="nodes" name="nodes"></textarea>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="col-md-4 control-label" for="threshold">Threshold (0 - 100):</label>  
+                    <div class="col-md-4">
+                      <input id="threshold" name="threshold" type="text" value="90" class="form-control input-md"> 
+                    </div>
+                </div>
+
+                <!-- Button -->
+                <div class="form-group">
+                  <label class="col-md-4 control-label" for="redraw">Redraw</label>
+                  <div class="col-md-4">
+                    <button id="redraw" name="redraw" class="btn btn-primary">Redraw</button>
+                  </div>
+                </div>
+
+              </fieldset>
+            </form>
+          </div>
+
+
         <div style="min-height:30px"></div>
         <div class="row">
 <!--
@@ -46,7 +99,7 @@
 
             </div>
 -->
-            <div class="col-lg-12" id="graph">
+            <div class="col-lg-12 dev" id="graph">
 
             </div>
         </div>
@@ -57,59 +110,38 @@
   <script src="http://cmap.github.io/barista/barista.main.min.js"></script>
   <!--<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>-->
   <script type="text/javascript">
-    CMapHeaderView = new Barista.Views.CMapHeaderView({el: $("#header_target"),title: "qviz",subtitle: "visualizing cmap query results"});
-    CMapFooterView = new Barista.Views.CMapFooterView({el: $("#footer_target")});
+    // set up some functions
+    function draw_graph(edge_color, nodes, edges) {
+      console.log(edge_color);
+      console.log(nodes);
+      console.log(edges);
+      // draw the force-directed graph
+      var width = Math.max($("#graph").width(), 600);
+      var height = Math.max($("#graph").height(), 600);
 
-    // parse input from textarea
-    $("#submit").click(function(event) {
-        var lines = $("#textarea").val().split("\n");
-        console.log(lines);
-        lines.forEach(function(entry) {
-            d3.select("#" + entry)
-                    .attr("fill", "red");
-        })
-    })
-
-    // clear any selections
-    $("#clear").click(function(event) {
-        $("#textarea").val("");
-        d3.selectAll(".node")
-                .attr("fill", "black");
-    })
-
-//    generating force-directed graph
-    var width = 960,
-    height = 960;
-
-    var node_color = d3.scale.category20();
-    var edge_color = {"pos": "red",
-                        "neg": "blue"};
-
-    var force = d3.layout.force()
+      var force = d3.layout.force()
         .charge(-120)
         .size([width, height]);
 
-    var svg = d3.select("#graph").append("svg")
+      var svg = d3.select("#graph").append("svg")
         .attr("width", width)
         .attr("height", height);
-
-    d3.json("/get_connections/connections?poscon=HDAC_with_small_cluster", function(error, graph) {
-      console.log(graph);
-        force
-          .nodes(graph.nodes)
-          .links(graph.edges)
+      
+      force
+          .nodes(nodes)
+          .links(edges)
                 .linkDistance(function(d) { return (100 - d.score); }) // assume scores are rankpoints
           .start();
 
       var link = svg.selectAll(".link")
-          .data(graph.edges)
+          .data(edges)
         .enter().append("line")
           .attr("class", "link")
               .style("stroke", function(d) { return edge_color[d.direction]; })
           .style("stroke-width", 3);
 
       var node = svg.selectAll(".node")
-          .data(graph.nodes)
+          .data(nodes)
         .enter().append("circle")
           .attr("class", "node")
               .attr("id", function(d) { return d.id; })
@@ -129,7 +161,79 @@
         node.attr("cx", function(d) { return d.x; })
             .attr("cy", function(d) { return d.y; });
       });
+    }
+
+    // basic header and footer views
+    var CMapHeaderView = new Barista.Views.CMapHeaderView({el: $("#header_target"),title: "qviz",subtitle: "visualizing cmap query results"});
+    var CMapFooterView = new Barista.Views.CMapFooterView({el: $("#footer_target")});
+
+    // set up collection(s)
+    var node_collection = new Backbone.Collection([]);
+    // node_collection.url = "/get_connections/connections?poscon=HDAC_plus_PI3K_inhibitor&nodes_only=true";
+    // node_collection.fetch();
+    var edge_collection = new Backbone.Collection([]);
+    // edge_collection.url = "/get_connections/connections?poscon=HDAC_plus_PI3K_inhibitor&edges_only=true";
+    // edge_collection.fetch();
+
+    // set up some variables for force-directed graph
+    var node_color = d3.scale.category20();
+    var edge_color = {"pos": "red",
+                        "neg": "blue"};
+
+
+    // fetch data and draw the graph
+    $.getJSON("/get_connections/connections?poscon=HDAC_plus_PI3K_inhibitor").done(function(response) {
+      node_collection.reset(response.nodes);
+      edge_collection.reset(response.edges);
+      draw_graph(edge_color, node_collection.toJSON(), edge_collection.toJSON());
     });
+
+    // parse input from textarea
+    $("#submit").click(function(event) {
+        var lines = $("#highlight").val().split("\n");
+        console.log(lines);
+        lines.forEach(function(entry) {
+            d3.select("#" + entry)
+                    .attr("fill", "red");
+        })
+    })
+
+    // clear any selections
+    $("#clear").click(function(event) {
+        $("#textarea").val("");
+        d3.selectAll(".node")
+                .attr("fill", "black");
+    })
+
+    // process input from poscon set dropdown
+    $("#redraw").click(function(event) {
+      event.preventDefault();
+      var poscon = $("#poscon").val();
+      var threshold = parseFloat($("#threshold").val());
+      var nodes = [];
+      $("#nodes").val().split("\n").forEach(function(node) {
+        nodes.push(node);
+      })
+      var query = $.ajax({
+        url: "/get_connections/connections?poscon=" + poscon + "&thresh=" + threshold,
+        type: "GET",
+        dataType: "json",
+        data: {"nodes": nodes}
+      }).done(function(response) {
+          node_collection.reset(response.nodes);
+          edge_collection.reset(response.edges);
+          $("#graph svg").remove();
+          draw_graph(edge_color, node_collection.toJSON(), edge_collection.toJSON());
+        });
+    })
+
+    
+
+    // d3.json("/get_connections/connections?poscon=HDAC_plus_PI3K_inhibitor&nodes_only=true", function(error, graph) {
+    //   console.log(graph);
+    
+
+    // });
 
 //    generating tag cloud
 //      var fill = d3.scale.category20();

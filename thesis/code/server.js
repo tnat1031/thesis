@@ -133,6 +133,8 @@ var poscons = {
 function make_nodes_and_edges(docs, connection_thresh) {
     // take a list of docs and create an array of nodes and edges to be
     // sent back to client
+    // var nodes_only = typeof(nodes_only) !== 'undefined' ? nodes_only : false;
+    // var edges_only = typeof(egdes_only) !== 'undefined' ? edges_only : false;
     var seen_perts = [];
     var nodes = [];
     var edges = [];
@@ -167,22 +169,49 @@ function make_nodes_and_edges(docs, connection_thresh) {
             }
         }
     }
+    // if (nodes_only) return(nodes);
+    // else if (edges_only) return(edges);
     return( {"nodes": nodes, "edges": edges} );
 }
 
 // set up some routes
 app.get('/get_connections/:collection', function(req, res) {
+    // sends back an object with keys for nodes and edges
+    // allows specifying a poscon set to return
     console.log(req.query);
+    console.log(req.body);
     var collection_name = req.params.collection;
-    var limit = req.query.limit;
+    var limit = parseInt(req.query.limit);
     var thresh = req.query.thresh ? req.query.thresh : 90;
     var poscon_set = req.query.poscon;
+    var skip = req.query.skip ? parseInt(req.query.skip) : 0;
+    var nodes = req.query.nodes ? req.query.nodes : false;
+    // var nodes_only = typeof(req.query.nodes_only) !== 'undefined' ? nodes_only : false;
+    // var edges_only = typeof(req.query.egdes_only) !== 'undefined' ? edges_only : false;
     // var random = req.query.random : true ? false;
     MongoClient.connect(dbloc, function(err, db) {
         if(err) throw(err);
         var collection = db.collection(collection_name);
-        if (poscon_set === undefined) {
-          collection.find({}, {limit:limit}).toArray(function(err, results) {
+        if (nodes) {
+            // request has specified specific nodes to search for, use them
+          collection.find({
+            "$and": [
+              {"pert_iname_x": {"$in": nodes}},
+              {"pert_iname_y": {"$in": nodes}}
+            ]
+          }).toArray(function(err, results) {
+              if (err) {
+                  console.error(err);
+              } else {
+                  console.log(results.length + " results");
+                  nodes_and_edges = make_nodes_and_edges(results, thresh);
+                  res.send(nodes_and_edges);
+              }
+          })
+        }
+        else if (poscon_set === undefined) {
+            // no nodes or poscon set defined, just return however many nodes specified
+          collection.find({}, {limit:limit, skip:skip}).toArray(function(err, results) {
               if (err) {
                   console.error(err);
               } else {
@@ -192,6 +221,7 @@ app.get('/get_connections/:collection', function(req, res) {
           })
         }
         else {
+            // poscon set was specified, return it
           collection.find({
             "$and": [
               {"pert_iname_x": {"$in": poscons[poscon_set]}},
