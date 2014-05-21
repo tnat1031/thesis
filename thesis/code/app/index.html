@@ -64,9 +64,21 @@
                 </div>
 
 
+                <!-- Select Basic -->
+                <div class="form-group">
+                  <label class="col-md-4 control-label" for="conn_space">Connectivity Space:</label>
+                  <div class="col-md-4">
+                    <select id="conn_space" name="conn_space" class="form-control">
+                      <option value="vcap">VCAP</option>
+                      
+                    </select>
+                  </div>
+                </div>
+
+
                 <!-- Textarea -->
                 <div class="form-group">
-                  <label class="col-md-4 control-label" for="nodes">Nodes of to Include:</label>
+                  <label class="col-md-4 control-label" for="nodes">Nodes to Graph:</label>
                   <div class="col-md-4">
                     <textarea class="form-control" id="nodes" name="nodes"></textarea>
                   </div>
@@ -152,6 +164,7 @@
       node.append("title")
           .text(function(d) { return d.id; });
 
+      // set up graph behavior when reaching equilibrium
       force.on("tick", function() {
         link.attr("x1", function(d) { return d.source.x; })
             .attr("y1", function(d) { return d.source.y; })
@@ -160,6 +173,21 @@
 
         node.attr("cx", function(d) { return d.x; })
             .attr("cy", function(d) { return d.y; });
+
+      // enable brushing
+      var brush = svg.append("g")
+        .attr("class", "brush")
+        .call(d3.svg.brush()
+          .x(d3.scale.identity().domain([0, width]))
+          .y(d3.scale.identity().domain([0, height]))
+          .on("brush", function() {
+            var extent = d3.event.target.extent();
+            node.classed("selected", function(d) {
+              return extent[0][0] <= d.x && d.x < extent[1][0]
+                  && extent[0][1] <= d.y && d.y < extent[1][1];
+            });
+          }));
+
       });
     }
 
@@ -182,7 +210,8 @@
 
 
     // fetch data and draw the graph
-    $.getJSON("/get_connections/connections?poscon=HDAC_plus_PI3K_inhibitor").done(function(response) {
+    var collection = $("#conn_space").val();
+    $.getJSON("/get_connections/" + collection + "?poscon=HDAC_plus_PI3K_inhibitor").done(function(response) {
       node_collection.reset(response.nodes);
       edge_collection.reset(response.edges);
       draw_graph(edge_color, node_collection.toJSON(), edge_collection.toJSON());
@@ -194,30 +223,32 @@
         console.log(lines);
         lines.forEach(function(entry) {
             d3.select("#" + entry)
-                    .attr("fill", "green")
-                    .attr("r", 10);
+                    .attr("class", "selected");
+                    //.attr("r", 10);
         })
     })
 
     // clear any selections
     $("#clear").click(function(event) {
         $("#textarea").val("");
-        d3.selectAll(".node")
-                .attr("fill", "black")
-                .attr("r", 6);
+        d3.selectAll(".selected")
+                .attr("class", "node");
+                //.attr("r", 6);
     })
 
-    // process input from poscon set dropdown
+    // process input from poscon set and query space dropdown
     $("#redraw").click(function(event) {
       event.preventDefault();
       var poscon = $("#poscon").val();
+      var collection = $("#conn_space").val();
       var threshold = parseFloat($("#threshold").val());
       var nodes = [];
       $("#nodes").val().split("\n").forEach(function(node) {
-        nodes.push(node);
+        if (node !== "") nodes.push(node);
       })
+      //nodes = nodes.length > 0 ? nodes : false;
       var query = $.ajax({
-        url: "/get_connections/connections?poscon=" + poscon + "&thresh=" + threshold,
+        url: "/get_connections/" + collection + "?poscon=" + poscon + "&thresh=" + threshold,
         type: "GET",
         dataType: "json",
         data: {"nodes": nodes}

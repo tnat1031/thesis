@@ -4,6 +4,11 @@
   stroke-width: 1.5px;
 }
 
+.selected {
+	stroke: #00FFFF;
+	stroke-width: 3px;
+}
+
 .link {
   stroke: #999;
   stroke-opacity: .6;
@@ -12,5 +17,11 @@
 .dev
 {
     outline: #000000 dotted;
+}
+
+.brush .extent {
+  fill-opacity: .1;
+  stroke: #fff;
+  shape-rendering: crispEdges;
 }
 
