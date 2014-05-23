@@ -282,6 +282,9 @@
     // process input from poscon set and query space dropdown
     $("#redraw").click(function(event) {
       event.preventDefault();
+      // fade out the current nodes and edges
+      d3.selectAll(".node").transition().attr("r", 0).remove();
+      d3.selectAll(".link").transition().style("stroke", "white").remove();
       var poscon = $("#poscon").val();
       var collection = $("#conn_space").val();
       var threshold = parseFloat($("#threshold").val());
