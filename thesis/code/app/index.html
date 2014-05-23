@@ -16,7 +16,7 @@
       <div class="col-lg-offset-1 col-lg-10" id="content">
         <div class="row" id="inputs">
             <!-- inputs for highlighting -->
-            <div class="col-lg-5" id="textarea_input">
+            <div class="col-lg-6" id="textarea_input">
                 <form class="form-horizontal">
                     <fieldset>
 
@@ -44,7 +44,7 @@
                 </form>
             </div>
             <!-- inputs for redrawing  -->
-            <div>
+            <div class="col-lg-6">
               <form class="form-horizontal">
                 <fieldset>
 
@@ -99,8 +99,31 @@
                   </div>
                 </div>
 
+                <!-- radio buttons   -->
+                <div class="form-group">
+                  <label class="col-md-4 control-label" for="radios">Cursor Type</label>
+                  <div class="col-md-4">
+                  <div class="radio">
+                    <label for="pointer">
+                      <input type="radio" name="cursor" id="pointer" value="pointer" checked="checked">
+                      pointer
+                    </label>
+                  </div>
+                  <div class="radio">
+                    <label for="brush">
+                      <input type="radio" name="cursor" id="brush" value="brush">
+                      brush
+                    </label>
+                  </div>
+                  </div>
+                </div>
+
               </fieldset>
             </form>
+
+             
+              
+
           </div>
 
 
@@ -111,20 +134,26 @@
 
             </div>
 -->
-            <div class="col-lg-12 dev" id="graph">
+            <div class="col-lg-12 dev" id="graph"></div>
 
-            </div>
         </div>
       </div>
-    </div><!-- footer view target -->
+    </div>
+
+    <div class="row"></div>
+
     <div id="footer_target"></div>
   </body>
   <script src="http://cmap.github.io/barista/barista.main.min.js"></script>
   <!--<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>-->
   <script type="text/javascript">
     // set up some functions
-    function draw_graph(edge_color, nodes, edges) {
-      console.log(edge_color);
+    function draw_graph(edge_color, node_color, nodes, edges) {
+      // clear the svg and brush, if any
+      $("#graph svg").remove();
+      //d3.selectAll(".brush").remove();
+
+      //console.log(edge_color);
       console.log(nodes);
       console.log(edges);
       // draw the force-directed graph
@@ -157,7 +186,7 @@
         .enter().append("circle")
           .attr("class", "node")
               .attr("id", function(d) { return d.id; })
-//              .attr("fill", function(d) { return node_color(d.id); })
+              .style("fill", function(d) { return node_color[d.pert_type]; })
           .attr("r", 6)
             .call(force.drag);
 
@@ -173,6 +202,7 @@
 
         node.attr("cx", function(d) { return d.x; })
             .attr("cy", function(d) { return d.y; });
+      });
 
       // enable brushing
       var brush = svg.append("g")
@@ -188,7 +218,10 @@
             });
           }));
 
-      });
+        // hide the brush initially. user can show it by clicking radio button
+        $(".brush").hide();
+
+      
     }
 
     // basic header and footer views
@@ -204,9 +237,8 @@
     // edge_collection.fetch();
 
     // set up some variables for force-directed graph
-    var node_color = d3.scale.category20();
-    var edge_color = {"pos": "red",
-                        "neg": "blue"};
+    var node_color = {"trt_cp": "blue", "trt_oe": "green", "trt_sh.cgs": "red"};
+    var edge_color = {"pos": "red", "neg": "blue"};
 
 
     // fetch data and draw the graph
@@ -214,7 +246,7 @@
     $.getJSON("/get_connections/" + collection + "?poscon=HDAC_plus_PI3K_inhibitor").done(function(response) {
       node_collection.reset(response.nodes);
       edge_collection.reset(response.edges);
-      draw_graph(edge_color, node_collection.toJSON(), edge_collection.toJSON());
+      draw_graph(edge_color, node_color, node_collection.toJSON(), edge_collection.toJSON());
     });
 
     // parse input from textarea
@@ -236,6 +268,17 @@
                 //.attr("r", 6);
     })
 
+    // listen to radio buttons
+    $("[name=cursor]").click(function() {
+      var hide_brush = $("input:radio:checked").val() === "pointer";
+      if (hide_brush) {
+        $(".brush").hide();
+      }
+      else {
+        $(".brush").show();
+      }
+    })
+
     // process input from poscon set and query space dropdown
     $("#redraw").click(function(event) {
       event.preventDefault();
@@ -255,8 +298,7 @@
       }).done(function(response) {
           node_collection.reset(response.nodes);
           edge_collection.reset(response.edges);
-          $("#graph svg").remove();
-          draw_graph(edge_color, node_collection.toJSON(), edge_collection.toJSON());
+          draw_graph(edge_color, node_color, node_collection.toJSON(), edge_collection.toJSON());
         });
     })
 

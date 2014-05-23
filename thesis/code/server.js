@@ -144,7 +144,9 @@ function make_nodes_and_edges(docs, connection_thresh) {
         var doc = docs[i];
         var score = doc.median_rankpoint;
         var pert_iname_x = doc.pert_iname_x;
+        var pert_type_x = doc.pert_type_x;
         var pert_iname_y = doc.pert_iname_y;
+        var pert_type_y = doc.pert_type_y;
         if (pert_iname_x !== pert_iname_y) {
             var combo = [pert_iname_x, pert_iname_y].sort().join(":");
             if (seen_combos.indexOf(combo) == -1) {
@@ -153,13 +155,13 @@ function make_nodes_and_edges(docs, connection_thresh) {
                 if (seen_perts.indexOf(pert_iname_x) == -1) {
                     // pert_iname_x hasn't been seen yet
                     seen_perts.push(pert_iname_x);
-                    nodes.push( {"id": pert_iname_x} );
+                    nodes.push( {"id": pert_iname_x, "pert_type": pert_type_x} );
                     indices[pert_iname_x] = nodes.length - 1;
                 }
                 if (seen_perts.indexOf(pert_iname_y) == -1) {
                     // pert_iname_y hasn't been seen yet
                     seen_perts.push(pert_iname_y);
-                    nodes.push( {"id": pert_iname_y} );
+                    nodes.push( {"id": pert_iname_y, "pert_type": pert_type_y} );
                     indices[pert_iname_y] = nodes.length - 1;
                 }
                 if (Math.abs(score) >= connection_thresh) {
