@@ -4,7 +4,8 @@
 
 require("reshape")
 require("data.table")
-source("code/R/io.R")
+require("roller")
+#source("code/R/io.R")
 
 args <- commandArgs(trailingOnly=T)
 infile <- args[1]
