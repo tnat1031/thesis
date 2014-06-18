@@ -1,4 +1,6 @@
 var express = require('express');
+var fs = require('fs');
+var spawn = require('child_process').spawn;
 var app = express();
 var MongoClient = require('mongodb').MongoClient;
 var format = require('util').format;
@@ -8,8 +10,16 @@ app.use(express.bodyParser({ keepExtensions: true }));
 app.use(express.static(__dirname + "/app"));
 
 var dbloc = "mongodb://127.0.0.1:27017/thesis";
+var dump_dir = "/Users/tnatoli/github/thesis/thesis/code/app/data/tmp";
+var clique_script_path = "/Users/tnatoli/github/thesis/thesis/code/utils/find_cliques.R"
 
 var poscons = {
+  "HDAC_simple": [
+    "dacinostat",
+    "trichostatin-a",
+    "vorinostat",
+    "panobinostat"
+  ],
   "HDAC_inhibitor": [
     "dacinostat",
     "apicidin",
@@ -182,6 +192,18 @@ function make_nodes_and_edges(docs, connection_thresh) {
     return( {"nodes": nodes, "edges": edges} );
 }
 
+// dump a set of edges to a file
+function dump_edges(nodes, edges, file_name, outpath) {
+    var data = "source\ttarget\n";
+    edges.forEach(function(edge) {
+        data += nodes[edge.source].id + "\t" + nodes[edge.target].id + "\n";
+    })
+    fs.writeFile(outpath + "/" + file_name, data, function(err) {
+        if(err) throw(err);
+        console.log("edges saved\n");
+    });
+}
+
 // set up some routes
 app.get('/get_connections/:collection', function(req, res) {
     // sends back an object with keys for nodes and edges
@@ -194,6 +216,14 @@ app.get('/get_connections/:collection', function(req, res) {
     var poscon_set = req.query.poscon;
     var skip = req.query.skip ? parseInt(req.query.skip) : 0;
     var nodes = req.query.nodes ? req.query.nodes : false;
+    // make a time-stamp directory
+    var ts_dir = req.query.analysis_id ? req.query.analysis_id : "query_" + new Date().getTime();
+    var outdir = dump_dir + "/" + ts_dir;
+    var edge_file = outdir + "/" + "edges.txt"
+    fs.mkdir(outdir, function(err) {
+        if(err) throw(err);
+        console.log("created " + outdir);
+    })
     // var nodes_only = typeof(req.query.nodes_only) !== 'undefined' ? nodes_only : false;
     // var edges_only = typeof(req.query.egdes_only) !== 'undefined' ? edges_only : false;
     // var random = req.query.random : true ? false;
@@ -213,7 +243,20 @@ app.get('/get_connections/:collection', function(req, res) {
               } else {
                   console.log(results.length + " results");
                   nodes_and_edges = make_nodes_and_edges(results, thresh);
-                  res.send(nodes_and_edges);
+                  dump_edges(nodes_and_edges.nodes, nodes_and_edges.edges, "edges.txt", outdir);
+                  var clique = spawn("/usr/bin/Rscript", [clique_script_path, edge_file, ts_dir]);
+                  //console.log(clique);
+                  //console.log("/usr/bin/Rscript", + [clique_script_path, edge_file, ts_dir].join(" "));
+                  clique.stdout.on("data", function(data) {
+                    console.log(String(data));
+                  })
+                  clique.stderr.on("data", function(data) {
+                    console.error(String(data));
+                  })
+                  clique.on("exit", function(code) {
+                    console.log(code);
+                    res.send(nodes_and_edges);
+                  })
               }
           })
         }
@@ -224,7 +267,20 @@ app.get('/get_connections/:collection', function(req, res) {
                   console.error(err);
               } else {
                   nodes_and_edges = make_nodes_and_edges(results, thresh);
-                  res.send(nodes_and_edges);
+                  dump_edges(nodes_and_edges.nodes, nodes_and_edges.edges, "edges.txt", outdir);
+                  var clique = spawn("/usr/bin/Rscript", [clique_script_path, edge_file, ts_dir]);
+                  //console.log(clique);
+                  //console.log("/usr/bin/Rscript", + [clique_script_path, edge_file, ts_dir].join(" "));
+                  clique.stdout.on("data", function(data) {
+                    console.log(String(data));
+                  })
+                  clique.stderr.on("data", function(data) {
+                    console.error(String(data));
+                  })
+                  clique.on("exit", function(code) {
+                    console.log(code);
+                    res.send(nodes_and_edges);
+                  })
               }
           })
         }
@@ -241,10 +297,45 @@ app.get('/get_connections/:collection', function(req, res) {
               } else {
                   console.log(results.length + " results");
                   nodes_and_edges = make_nodes_and_edges(results, thresh);
-                  res.send(nodes_and_edges);
+                  dump_edges(nodes_and_edges.nodes, nodes_and_edges.edges, "edges.txt", outdir);
+                  var clique = spawn("/usr/bin/Rscript", [clique_script_path, edge_file, ts_dir]);
+                  //console.log(clique);
+                  //console.log("/usr/bin/Rscript", + [clique_script_path, edge_file, ts_dir].join(" "));
+                  clique.stdout.on("data", function(data) {
+                    console.log(String(data));
+                  })
+                  clique.stderr.on("data", function(data) {
+                    console.error(String(data));
+                  })
+                  clique.on("exit", function(code) {
+                    console.log(code);
+                    res.send(nodes_and_edges);
+                  })
               }
           })
         }
+    })
+})
+
+app.get('/get_cliques/:analysis_id', function(req, res) {
+    // sends back all cliques given the current analysis id
+    var analysis_id = req.params.analysis_id;
+    MongoClient.connect(dbloc, function(err, db) {
+      if(err) throw(err);
+      var collection = db.collection('cliques');
+      collection.find({"analysis_id": analysis_id}).toArray(function(err, results) {
+              if (err) {
+                  console.error(err);
+              } else {
+                  var num_cliques = results.length;
+                  if((num_cliques === 1) && (results[0].num_members === 0)) {
+                    // we only got one record and it has no members, so really there were no cliques
+                    num_cliques = 0;
+                  }
+                  
+                  res.send({"cliques": results, "num_cliques": num_cliques});
+              }
+          })
     })
 })
 

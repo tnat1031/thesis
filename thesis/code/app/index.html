@@ -56,8 +56,9 @@
                   <label class="col-md-4 control-label" for="poscon">Poscon Set:</label>
                   <div class="col-md-4">
                     <select id="poscon" name="poscon" class="form-control">
+                      <option value="HDAC_simple">HDAC inhibitors (simple)</option>
+                      <option value="HDAC_inhibitor">HDAC inhibitors (expanded)</option>
                       <option value="HDAC_plus_PI3K_inhibitor">HDAC inhibitors & PI3K inhibitors</option>
-                      <option value="HDAC_inhibitor">HDAC inhibitors</option>
                       <option value="HDAC_plus_random">HDAC inhibitors & random</option>
                     </select>
                   </div>
@@ -69,7 +70,7 @@
                   <label class="col-md-4 control-label" for="conn_space">Connectivity Space:</label>
                   <div class="col-md-4">
                     <select id="conn_space" name="conn_space" class="form-control">
-                      <option value="vcap">VCAP</option>
+                      <option value="vcap_erg">VCAP-ERG</option>
                       
                     </select>
                   </div>
@@ -147,6 +148,10 @@
   <script src="http://cmap.github.io/barista/barista.main.min.js"></script>
   <!--<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>-->
   <script type="text/javascript">
+    // define analysis_id
+    var analysis_id = "query_" + new Date().getTime(); 
+    console.log(analysis_id);
+
     // set up some functions
     function draw_graph(edge_color, node_color, nodes, edges) {
       // clear the svg and brush, if any
@@ -154,8 +159,8 @@
       //d3.selectAll(".brush").remove();
 
       //console.log(edge_color);
-      console.log(nodes);
-      console.log(edges);
+      //console.log(nodes);
+      //console.log(edges);
       // draw the force-directed graph
       var width = Math.max($("#graph").width(), 600);
       var height = Math.max($("#graph").height(), 600);
@@ -241,18 +246,23 @@
     var edge_color = {"pos": "red", "neg": "blue"};
 
 
-    // fetch data and draw the graph
+    // fetch data and draw the graph upon page load
     var collection = $("#conn_space").val();
-    $.getJSON("/get_connections/" + collection + "?poscon=HDAC_plus_PI3K_inhibitor").done(function(response) {
+    $.getJSON("/get_connections/" + collection + "?poscon=HDAC_simple&analysis_id=" + analysis_id).done(function(response) {
       node_collection.reset(response.nodes);
       edge_collection.reset(response.edges);
       draw_graph(edge_color, node_color, node_collection.toJSON(), edge_collection.toJSON());
+      console.log(analysis_id);
+      // fetch the corresponding cliques
+      $.getJSON("/get_cliques/" + analysis_id, function(cliques) {
+        console.log(cliques);
+      })
     });
 
     // parse input from textarea
     $("#submit").click(function(event) {
         var lines = $("#highlight").val().split("\n");
-        console.log(lines);
+        //console.log(lines);
         lines.forEach(function(entry) {
             d3.select("#" + entry)
                     .attr("class", "selected");
@@ -282,6 +292,8 @@
     // process input from poscon set and query space dropdown
     $("#redraw").click(function(event) {
       event.preventDefault();
+      // update the analysis_id
+      analysis_id = "query_" + new Date().getTime();
       // fade out the current nodes and edges
       d3.selectAll(".node").transition().attr("r", 0).remove();
       d3.selectAll(".link").transition().style("stroke", "white").remove();
@@ -294,7 +306,7 @@
       })
       //nodes = nodes.length > 0 ? nodes : false;
       var query = $.ajax({
-        url: "/get_connections/" + collection + "?poscon=" + poscon + "&thresh=" + threshold,
+        url: "/get_connections/" + collection + "?poscon=" + poscon + "&thresh=" + threshold + "&analysis_id=" + analysis_id, 
         type: "GET",
         dataType: "json",
         data: {"nodes": nodes}
@@ -302,6 +314,11 @@
           node_collection.reset(response.nodes);
           edge_collection.reset(response.edges);
           draw_graph(edge_color, node_color, node_collection.toJSON(), edge_collection.toJSON());
+          console.log(analysis_id);
+          // fetch the corresponding cliques
+          $.getJSON("/get_cliques/" + analysis_id, function(cliques) {
+            console.log(cliques);
+          })
         });
     })
 
