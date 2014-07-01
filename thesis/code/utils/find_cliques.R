@@ -29,15 +29,27 @@ d <- d[, c("source", "target")]
 
 g <- graph.data.frame(d, directed=F)
 
+# find the cliques
 graph_cliques <- cliques(g, min=min_size)
-
-clique_list <- list()
+largest_cliques <- largest.cliques(g)
+if(length(largest_cliques) != 0) {
+	largest_clique_size <- length(largest_cliques[[1]])
+} else {
+	largest_clique_size <- 0
+}
 
 # were there any cliques?
 if (length(graph_cliques) == 0) {
 	# no, insert a single record with zero members
 	members <- c()
-	b <- mongo.bson.from.list(list(analysis_id=analysis_id, clique_id=0, members=members, num_members=length(members)))
+	b <- mongo.bson.from.list(
+		list(analysis_id=analysis_id,
+		   	 clique_id=0,
+		     members=members,
+		     num_members=length(members),
+		     largest_clique_size=largest_clique_size,
+		     largest_cliques=largest_cliques
+	))
 	mongo.insert(mongo, namespace, b)
 } else {
 	for (i in 1:length(graph_cliques)) {
