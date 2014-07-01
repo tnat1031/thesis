@@ -15,36 +15,9 @@
     <div class="row">
       <div class="col-xs-offset-1 col-xs-10" id="content">
         <div class="row" id="inputs">
-            <!-- inputs for highlighting -->
-            <div class="col-lg-6" id="textarea_input">
-                <form class="form-horizontal">
-                    <fieldset>
-
-                    <!-- form title -->
-                    <legend>Input Node Names to Hightlight</legend>    
-                    
-                    <!-- Textarea -->
-                    <div class="form-group">
-                      <label class="col-md-4 control-label" for="highlight">Nodes of Interest:</label>
-                      <div class="col-md-4">
-                        <textarea class="form-control" id="highlight" name="highlight"></textarea>
-                      </div>
-                    </div>
-
-                    </fieldset>
-
-                    <!-- Button -->
-                    <div class="form-group">
-                      <label class="col-md-4 control-label" for="singlebutton"></label>
-                      <div class="col-md-4">
-                        <button name="singlebutton" class="btn btn-primary" id="submit" type="button">Submit</button>
-                        <button name="singlebutton" class="btn btn-default" id="clear" type="button">Clear</button>
-                      </div>
-                    </div>
-                </form>
-            </div>
+            
             <!-- inputs for redrawing  -->
-            <div class="col-lg-6">
+            <div class="col-xs-12">
               <form class="form-horizontal">
                 <fieldset>
 
@@ -89,7 +62,7 @@
                 <div class="form-group">
                   <label class="col-md-4 control-label" for="threshold">Threshold (0 - 100):</label>  
                     <div class="col-md-4">
-                      <input id="threshold" name="threshold" type="text" value="90" class="form-control input-md"> 
+                      <input id="threshold" name="threshold" type="text" value="95" class="form-control input-md"> 
                     </div>
                 </div>
 
@@ -127,6 +100,7 @@
               
 
           </div>
+        </div>
 
 
         <div style="min-height:30px"></div>
@@ -147,22 +121,55 @@
             </div>
 
 
-            <div class="row" id="graph_container" style="display: none">
+            <div class="row" id="graph_container" style="display: block; visibility: hidden">
               <!-- clique stats -->
-              <div class="col-xs-3" id="clique_stats">
-                <div class="panel panel-default">
-                  <!-- Default panel contents -->
-                  <div class="panel-heading">Graph Stats</div>
+              <div class="col-xs-3">
+                <div class="row">
+                  <div class="col-xs-12" id="clique_stats">
+                    <div class="panel panel-default">
+                      <!-- Default panel contents -->
+                      <div class="panel-heading">Graph Stats</div>
 
-                  <!-- List group -->
-                  <ul class="list-group">
-                    <li class="list-group-item">Number of cliques: <span style="float: right"><strong id="num_cliques"></strong></span></li>
-                    <li class="list-group-item">Dapibus ac facilisis in</li>
-                    <li class="list-group-item">Morbi leo risus</li>
-                    <li class="list-group-item">Porta ac consectetur ac</li>
-                    <li class="list-group-item">Vestibulum at eros</li>
-                  </ul>
-                </div>
+                      <!-- List group -->
+                      <ul class="list-group">
+                        <li class="list-group-item">Number of cliques: <span style="float: right"><strong id="num_cliques"></strong></span></li>
+                        <li class="list-group-item">Clique density: </li>
+                        <li class="list-group-item">Clique density p-value: </li>
+                        <li class="list-group-item">Largest clique size: </li>
+                        <li class="list-group-item">Largest clique size p-value: </li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <!-- inputs for highlighting -->
+                  <div class="col-xs-12" id="textarea_input">
+                      <form class="form-horizontal">
+                          <fieldset>
+
+                          <!-- form title -->
+                          <!-- <legend>Input Node Names to Hightlight</legend>     -->
+                          
+                          <!-- Textarea -->
+                          <div class="form-group">
+                            <label class="col-xs-4 control-label" for="highlight">Highlight nodes:</label>
+                            <div class="col-xs-8">
+                              <textarea class="form-control" id="highlight" name="highlight"></textarea>
+                            </div>
+                          </div>
+
+                          </fieldset>
+
+                          <!-- Button -->
+                          <div class="form-group">
+                            <label class="col-xs-4 control-label" for="singlebutton"></label>
+                            <div class="col-xs-8">
+                              <button name="singlebutton" class="btn btn-primary" id="submit" type="button">Submit</button>
+                              <button name="singlebutton" class="btn btn-default" id="clear" type="button">Clear</button>
+                            </div>
+                          </div>
+                      </form>
+                    </div>
+                  </div>
               </div>
 
               <!-- the graph -->
@@ -289,7 +296,7 @@
       $.getJSON("/get_cliques/" + analysis_id).done(function(cliques) {
         console.log(cliques);
         $("#loading_group").hide(500);
-        $("#graph_container").show(500);
+        $("#graph_container").css("visibility", "visible");
         $("#num_cliques").html(cliques.num_cliques);
       })
     });
@@ -328,7 +335,7 @@
     $("#redraw").click(function(event) {
       event.preventDefault();
       // hide the graph and show the loading group
-      $("#graph_container").hide(500);
+      $("#graph_container").css("visibility", "hidden");
       $("#loading_group").show(500);
       // update the analysis_id
       analysis_id = "query_" + new Date().getTime();
@@ -357,7 +364,7 @@
           $.getJSON("/get_cliques/" + analysis_id).done(function(cliques) {
             console.log(cliques.num_cliques);
             $("#loading_group").hide(500);
-            $("#graph_container").show(500);
+            $("#graph_container").css("visibility", "visible");
             $("#num_cliques").html(cliques.num_cliques);
           })
         });

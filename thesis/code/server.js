@@ -152,7 +152,7 @@ function make_nodes_and_edges(docs, connection_thresh) {
     var indices = {};
     for (var i = 0; i < docs.length; i++) {
         var doc = docs[i];
-        var score = doc.median_rankpoint;
+        var score = doc.score;
         var pert_iname_x = doc.pert_iname_x;
         var pert_type_x = doc.pert_type_x;
         var pert_iname_y = doc.pert_iname_y;
