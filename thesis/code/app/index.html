@@ -17,89 +17,90 @@
         <div class="row" id="inputs">
             
             <!-- inputs for redrawing  -->
-            <div class="col-xs-12">
+            
               <form class="form-horizontal">
                 <fieldset>
+
 
                 <!-- Form Name -->
                 <legend>Select Graph Parameters</legend>
 
-                <!-- Select Basic -->
-                <div class="form-group">
-                  <label class="col-md-4 control-label" for="poscon">Poscon Set:</label>
-                  <div class="col-md-4">
-                    <select id="poscon" name="poscon" class="form-control">
-                      <option value="HDAC_simple">HDAC inhibitors (simple)</option>
-                      <option value="HDAC_inhibitor">HDAC inhibitors (expanded)</option>
-                      <option value="HDAC_plus_PI3K_inhibitor">HDAC inhibitors & PI3K inhibitors</option>
-                      <option value="HDAC_plus_random">HDAC inhibitors & random</option>
-                    </select>
-                  </div>
-                </div>
-
-
-                <!-- Select Basic -->
-                <div class="form-group">
-                  <label class="col-md-4 control-label" for="conn_space">Connectivity Space:</label>
-                  <div class="col-md-4">
-                    <select id="conn_space" name="conn_space" class="form-control">
-                      <option value="summly">Across Cell Lines</option>
-                      <option value="vcap_erg">VCAP-ERG</option>
-                      
-                    </select>
-                  </div>
-                </div>
-
-
-                <!-- Textarea -->
-                <div class="form-group">
-                  <label class="col-md-4 control-label" for="nodes">Nodes to Graph:</label>
-                  <div class="col-md-4">
-                    <textarea class="form-control" id="nodes" name="nodes"></textarea>
-                  </div>
-                </div>
-
-                <div class="form-group">
-                  <label class="col-md-4 control-label" for="threshold">Threshold (0 - 100):</label>  
-                    <div class="col-md-4">
-                      <input id="threshold" name="threshold" type="text" value="95" class="form-control input-md"> 
+                <div class="col-xs-4">
+                  <!-- connectivity space -->
+                  <div class="form-group">
+                    <label class="col-xs-4 control-label" for="conn_space">Connectivity Space:</label>
+                    <div class="col-xs-6">
+                      <select id="conn_space" name="conn_space" class="form-control">
+                        <option value="summly">Across Cell Lines</option>
+                        <option value="vcap_erg">VCAP-ERG</option>
+                        
+                      </select>
                     </div>
-                </div>
-
-                <!-- Button -->
-                <div class="form-group">
-                  <label class="col-md-4 control-label" for="redraw">Redraw</label>
-                  <div class="col-md-4">
-                    <button id="redraw" name="redraw" class="btn btn-primary">Redraw</button>
+                  </div>
+                  <!-- threshold -->
+                  <div class="form-group">
+                    <label class="col-xs-4 control-label" for="threshold">Threshold (0 - 100):</label>  
+                      <div class="col-xs-6">
+                        <input id="threshold" name="threshold" type="text" value="95" class="form-control input-md"> 
+                      </div>
                   </div>
                 </div>
 
-                <!-- radio buttons   -->
-                <div class="form-group">
-                  <label class="col-md-4 control-label" for="radios">Cursor Type</label>
-                  <div class="col-md-4">
-                  <div class="radio">
-                    <label for="pointer">
-                      <input type="radio" name="cursor" id="pointer" value="pointer" checked="checked">
-                      pointer
-                    </label>
+                <div class="col-xs-4">
+                  <!-- input nodes -->
+                  <div class="form-group">
+                    <label class="col-xs-4 control-label" for="nodes">Nodes to Graph:</label>
+                    <div class="col-xs-8">
+                      <textarea class="form-control" id="nodes" name="nodes"></textarea>
+                    </div>
                   </div>
-                  <div class="radio">
-                    <label for="brush">
-                      <input type="radio" name="cursor" id="brush" value="brush">
-                      brush
-                    </label>
+                  <div class="row">
+                    <label class="col-xs-4 control-label" for="nodes">OR</label>
                   </div>
+                  <!-- poscon set -->
+                  <div class="form-group">
+                    <label class="col-xs-4 control-label" for="poscon">Poscon Set:</label>
+                    <div class="col-xs-8">
+                      <select id="poscon" name="poscon" class="form-control">
+                        <option value="HDAC_simple">HDAC inhibitors (simple)</option>
+                        <option value="HDAC_inhibitor">HDAC inhibitors (expanded)</option>
+                        <option value="HDAC_plus_PI3K_inhibitor">HDAC inhibitors & PI3K inhibitors</option>
+                        <option value="HDAC_plus_random">HDAC inhibitors & random</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-xs-4">
+                  <!-- radio buttons   -->
+                  <div class="form-group">
+                    <label class="col-xs-4 control-label" for="radios">Cursor Type</label>
+                    <div class="col-xs-4">
+                    <div class="radio">
+                      <label for="pointer">
+                        <input type="radio" name="cursor" id="pointer" value="pointer" checked="checked">
+                        pointer
+                      </label>
+                    </div>
+                    <div class="radio">
+                      <label for="brush">
+                        <input type="radio" name="cursor" id="brush" value="brush">
+                        brush
+                      </label>
+                    </div>
+                    </div>
+                  </div>
+
+                  <!-- Button -->
+                  <div class="form-group">
+                    <!-- <label class="col-xs-4 control-label" for="redraw"></label> -->
+                      <button id="redraw" name="redraw" class="btn btn-primary col-xs-4 col-xs-offset-4">Redraw</button>
                   </div>
                 </div>
 
               </fieldset>
             </form>
 
-             
-              
-
-          </div>
         </div>
 
 
@@ -133,10 +134,10 @@
                       <!-- List group -->
                       <ul class="list-group">
                         <li class="list-group-item">Number of cliques: <span style="float: right"><strong id="num_cliques"></strong></span></li>
-                        <li class="list-group-item">Clique density: </li>
-                        <li class="list-group-item">Clique density p-value: </li>
-                        <li class="list-group-item">Largest clique size: </li>
-                        <li class="list-group-item">Largest clique size p-value: </li>
+                        <li class="list-group-item">Clique density: <span style="float: right"><strong id="clique_density"></strong></span></li>
+                        <li class="list-group-item">Clique density p-value: <span style="float: right"><strong id="clique_density_p"></strong></span></li>
+                        <li class="list-group-item">Largest clique size: <span style="float: right"><strong id="largest_clique_size"></strong></span></li>
+                        <li class="list-group-item">Largest clique size p-value: <span style="float: right"><strong id="largest_clique_size_p"></strong></span></li>
                       </ul>
                     </div>
                   </div>
@@ -257,9 +258,18 @@
           .on("brush", function() {
             var extent = d3.event.target.extent();
             node.classed("selected", function(d) {
-              return extent[0][0] <= d.x && d.x < extent[1][0]
-                  && extent[0][1] <= d.y && d.y < extent[1][1];
+              if(extent[0][0] <= d.x && d.x < extent[1][0] && extent[0][1] <= d.y && d.y < extent[1][1]) {
+                return true;
+              }
+              else {
+                return false;
+              }
             });
+            var selected = [];
+            $(".selected").each(function(i, el) {
+              selected.push($(el).attr("id"));
+              $("#highlight").val(selected.join("\n"));
+            })
           }));
 
         // hide the brush initially. user can show it by clicking radio button
@@ -314,7 +324,7 @@
 
     // clear any selections
     $("#clear").click(function(event) {
-        $("#textarea").val("");
+        $("#highlight").val("");
         d3.selectAll(".selected")
                 .attr("class", "node");
                 //.attr("r", 6);
