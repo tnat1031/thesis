@@ -270,12 +270,21 @@
               selected.push($(el).attr("id"));
               $("#highlight").val(selected.join("\n"));
             })
+            if(selected.length===0) {
+              $("#highlight").val("");
+            }
           }));
 
         // hide the brush initially. user can show it by clicking radio button
         $(".brush").hide();
 
       
+    }
+
+    function show_graph_and_stats(cliques) {
+        $("#loading_group").hide(500);
+        $("#graph_container").css("visibility", "visible");
+        $("#num_cliques").html(cliques.num_cliques);
     }
 
     // basic header and footer views
@@ -305,9 +314,7 @@
       // fetch the corresponding cliques
       $.getJSON("/get_cliques/" + analysis_id).done(function(cliques) {
         console.log(cliques);
-        $("#loading_group").hide(500);
-        $("#graph_container").css("visibility", "visible");
-        $("#num_cliques").html(cliques.num_cliques);
+        show_graph_and_stats(cliques);
       })
     });
 
@@ -373,9 +380,7 @@
           // fetch the corresponding cliques
           $.getJSON("/get_cliques/" + analysis_id).done(function(cliques) {
             console.log(cliques.num_cliques);
-            $("#loading_group").hide(500);
-            $("#graph_container").css("visibility", "visible");
-            $("#num_cliques").html(cliques.num_cliques);
+            show_graph_and_stats(cliques);
           })
         });
     })
