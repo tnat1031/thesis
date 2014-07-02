@@ -52,6 +52,8 @@ if (length(graph_cliques) == 0) {
 	))
 	mongo.insert(mongo, namespace, b)
 } else {
+	## update this to only insert one document into mongo
+
 	for (i in 1:length(graph_cliques)) {
 		m <- g[graph_cliques[[i]]]
 		members <- rownames(m)
