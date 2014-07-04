@@ -12,8 +12,9 @@ space_file <- args[1]
 outpath <- args[2]
 min_score <- args[3]
 max_score <- args[4]
-max_sample_size <- args[5]
-min_size <- args[6]
+min_sample_size <- args[5]
+max_sample_size <- args[6]
+min_clique_size <- args[7]
 
 if(is.na(min_score)) {
 	min_score <- 90
@@ -21,6 +22,10 @@ if(is.na(min_score)) {
 
 if(is.na(max_score)) {
 	max_score <- 99
+}
+
+if(is.na(min_sample_size)) {
+	min_sample_size <- 2
 }
 
 if(is.na(max_sample_size)) {
@@ -39,7 +44,7 @@ d <- read.delim(space_file)
 dlist <- list()
 
 cat("iterating...\n")
-for (i in 2:max_sample_size) {
+for (i in min_sample_size:max_sample_size) {
 	cat(paste(i, "\t"))
 	# for every sample size
 	for(j in 1:1000) {
@@ -58,7 +63,7 @@ for (i in 2:max_sample_size) {
 			sample_space <- sample(nodes, i)
 			samp <- droplevels(subset(dsub, pert_iname_x %in% sample_space & pert_iname_y %in% sample_space))
 			g <- graph.data.frame(samp, directed=F)
-			graph_cliques <- cliques(g, min=min_size)
+			graph_cliques <- cliques(g, min=min_clique_size)
 			num_cliques <- length(graph_cliques)
 			largest_cliques <- largest.cliques(g)
 			if(length(largest_cliques) != 0) {
@@ -80,7 +85,7 @@ for (i in 2:max_sample_size) {
 out <- do.call("rbind", dlist)
 
 # write null table out 
-cat("writing null table...")
+cat("writing null table...\n")
 fname <- paste("null_cliques", basename(space_file), sep="_")
 write.table(out, paste(outpath, fname, sep="/"), col.names=T, row.names=F, sep="\t", quote=F)
 
