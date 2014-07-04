@@ -4,7 +4,7 @@
 # of various sizes
 
 # could multicore this
-
+require("igraph")
 require("igraph", lib.loc="/Users/tnatoli/github/thesis/thesis/code/R")
 
 args <- commandArgs(trailingOnly=T)
