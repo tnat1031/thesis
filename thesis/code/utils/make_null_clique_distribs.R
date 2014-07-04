@@ -35,8 +35,6 @@ if(is.na(min_size)) {
 cat("reading in data...\n")
 d <- read.delim(space_file)
 
-# make a subset of just pert iname columns
-d <- droplevels(d[, c("pert_iname_x", "pert_iname_y")])
 
 dlist <- list()
 
@@ -53,6 +51,7 @@ for (i in 2:max_sample_size) {
 			# subset to connection threshold
 			cat("subsetting...\n")
 			dsub <- droplevels(subset(d, abs(score) >= z))
+			dsub <- droplevels(dsub[, c("pert_iname_x", "pert_iname_y")])
 			# get list of all nodes in dataset
 			cat("generating list of nodes...\n")
 			nodes <- unique(c(as.character(dsub$pert_iname_x), as.character(dsub$pert_iname_y)))
