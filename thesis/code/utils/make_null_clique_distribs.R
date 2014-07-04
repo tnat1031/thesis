@@ -35,16 +35,8 @@ if(is.na(min_size)) {
 cat("reading in data...\n")
 d <- read.delim(space_file)
 
-# subset to connection threshold
-cat("subsetting...\n")
-d <- droplevels(subset(d, abs(score) >= score_thresh))
-
 # make a subset of just pert iname columns
 d <- droplevels(d[, c("pert_iname_x", "pert_iname_y")])
-
-# get list of all nodes in dataset
-cat("generating list of nodes...\n")
-nodes <- unique(c(as.character(d$pert_iname_x), as.character(d$pert_iname_y)))
 
 dlist <- list()
 
@@ -58,8 +50,14 @@ for (i in 2:max_sample_size) {
 		for(z in min_score:max_score) {
 			cat(paste("\t", "\t", z, "\n"))
 			# for every score
+			# subset to connection threshold
+			cat("subsetting...\n")
+			dsub <- droplevels(subset(d, abs(score) >= z))
+			# get list of all nodes in dataset
+			cat("generating list of nodes...\n")
+			nodes <- unique(c(as.character(dsub$pert_iname_x), as.character(dsub$pert_iname_y)))
 			sample_space <- sample(nodes, i)
-			samp <- droplevels(subset(d, pert_iname_x %in% sample_space & pert_iname_y %in% sample_space))
+			samp <- droplevels(subset(dsub, pert_iname_x %in% sample_space & pert_iname_y %in% sample_space))
 			g <- graph.data.frame(samp, directed=F)
 			graph_cliques <- cliques(g, min=min_size)
 			num_cliques <- length(graph_cliques)
