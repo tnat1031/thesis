@@ -32,8 +32,8 @@ if(is.na(max_sample_size)) {
 	max_sample_size <- 20
 }
 
-if(is.na(min_size)) {
-	min_size <- 3
+if(is.na(min_clique_size)) {
+	min_clique_size <- 3
 }
 
 # read in dataset
