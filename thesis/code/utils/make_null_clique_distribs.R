@@ -27,22 +27,28 @@ if(is.na(min_size)) {
 }
 
 # read in dataset
+cat("reading in data...\n")
 d <- read.delim(space_file)
 
 # subset to connection threshold
+cat("subsetting...\n")
 d <- droplevels(subset(d, abs(score) >= score_thresh))
 
 # make a subset of just pert iname columns
 d <- droplevels(d[, c("pert_iname_x", "pert_iname_y")])
 
 # get list of all nodes in dataset
+cat("generating list of nodes...\n")
 nodes <- unique(c(as.character(d$pert_iname_x), as.character(d$pert_iname_y)))
 
 dlist <- list()
 
-for (i in 1:max_sample_size) {
+cat("iterating...\n")
+for (i in 2:max_sample_size) {
+	cat(paste(i, "\t"))
 	# for every sample size
-	for(j in 1:1000) {
+	for(j in 1:100) {
+		cat(paste("\t", j, "\n"))
 		# for 1000 iterations
 		sample_space <- sample(nodes, i)
 		samp <- droplevels(subset(d, pert_iname_x %in% sample_space & pert_iname_y %in% sample_space))
@@ -57,6 +63,7 @@ for (i in 1:max_sample_size) {
 			largest_clique_size <- 0
 		}
 		tmp <- data.frame(sample_size=i,
+						  iteration=j,
 						  num_cliques=num_cliques,
 						  largest_clique_size=largest_clique_size)
 		dlist[[length(dlist) + 1]] <- tmp
@@ -64,3 +71,9 @@ for (i in 1:max_sample_size) {
 }
 
 out <- do.call("rbind", dlist)
+
+# write null table out 
+cat("writing null table...")
+fname <- paste("null_cliques", basename(space_file), sep="_")
+write.table(out, paste(outpath, fname, sep="/"), col.names=T, row.names=F, sep="\t", quote=F)
+
