@@ -18,6 +18,6 @@ if __name__ == '__main__':
 			if not os.path.exists(odir):
 				os.mkdir(odir)
 			# Rscript code/utils/make_null_clique_distribs.R data/matched_lass_n10644x7533.txt ./ 90 90 5 5
-			cmd = 'bsub -P cmap -J {0}_{1} -q week -R rusage[mem=16] Rscript {2} {3} {4} {5} {6} {7} {8}'.format(score, size, rscript_file, space_file, odir, score, score, size, size)
-			print cmd
-			#os.system(cmd)
+			cmd = 'bsub -P cmap -J {0}_{1} -o {2} -q week -R rusage[mem=16] Rscript {3} {4} {5} {6} {7} {8} {9}'.format(score, size, os.path.join(odir, 'lsf.out'), rscript_file, space_file, odir, score, score, size, size)
+			#print cmd
+			os.system(cmd)
