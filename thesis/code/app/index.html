@@ -300,6 +300,8 @@
         $("#loading_group").hide(500);
         $("#graph_container").css("visibility", "visible");
         $("#num_cliques").html(cliques.num_cliques);
+        $("#clique_density").html(Math.round((cliques.num_cliques / node_collection.length) * 100) / 100);
+        $("#largest_clique_size").html(cliques.largest_clique_size);
     }
 
     // basic header and footer views

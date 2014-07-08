@@ -32,35 +32,58 @@ g <- graph.data.frame(d, directed=F)
 # find the cliques
 graph_cliques <- cliques(g, min=min_size)
 largest_cliques <- largest.cliques(g)
-if(length(largest_cliques) != 0) {
-	largest_clique_size <- length(largest_cliques[[1]])
+if(nrow(d) == 0) {
+	graph_cliques <- list()
+	largest_cliques <- list()
 } else {
-	largest_clique_size <- 0
+	if(length(largest_cliques) != 0) {
+		largest_clique_size <- length(largest_cliques[[1]])
+	} else {
+		largest_clique_size <- 0
+	}
 }
 
-# were there any cliques?
-if (length(graph_cliques) == 0) {
-	# no, insert a single record with zero members
-	members <- c()
-	b <- mongo.bson.from.list(
-		list(analysis_id=analysis_id,
-		   	 clique_id=0,
-		     members=members,
-		     num_members=length(members),
-		     largest_clique_size=largest_clique_size,
-		     largest_cliques=largest_cliques
-	))
-	mongo.insert(mongo, namespace, b)
-} else {
-	## update this to only insert one document into mongo
 
+# were there any cliques?
+# if (length(graph_cliques) == 0) {
+# 	# no, insert a single record with zero members
+# 	members <- c()
+# 	b <- mongo.bson.from.list(
+# 		list(analysis_id = analysis_id,
+# 		   	 clique_id = 0,
+# 		     members = members,
+# 		     num_members = length(members),
+# 		     largest_clique_size = largest_clique_size,
+# 		     largest_cliques = largest_cliques
+# 		)
+# 	)
+# 	mongo.insert(mongo, namespace, b)
+# } else {
+# 	## update this to only insert one document into mongo
+	mongo_cliques <- list()
+	mongo_largest_cliques <- list()
 	for (i in 1:length(graph_cliques)) {
 		m <- g[graph_cliques[[i]]]
 		members <- rownames(m)
-		b <- mongo.bson.from.list(list(analysis_id=analysis_id, clique_id=i, members=members, num_members=length(members)))
-		mongo.insert(mongo, namespace, b)
+		mongo_cliques[[length(mongo_cliques) + 1]] <- list(size = length(members), members = members)
 	}
-}
+	for (i in 1:length(largest_cliques)) {
+		m <- g[largest_cliques[[i]]]
+		members <- rownames(m)
+		mongo_largest_cliques[[length(mongo_largest_cliques) + 1]] <- list(size = length(members), members = members)
+	}
+	b <- mongo.bson.from.list(
+				list(
+					analysis_id=analysis_id,
+					num_cliques = length(graph_cliques),
+					cliques = mongo_cliques,
+					largest_clique_size = largest_clique_size,
+		     		largest_cliques = mongo_cliques
+					)
+				)
+	print(str(b))
+	mongo.insert(mongo, namespace, b)
+# }
 
 
 

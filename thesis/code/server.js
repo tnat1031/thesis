@@ -327,13 +327,13 @@ app.get('/get_cliques/:analysis_id', function(req, res) {
               if (err) {
                   console.error(err);
               } else {
-                  var num_cliques = results.length;
-                  if((num_cliques === 1) && (results[0].num_members === 0)) {
-                    // we only got one record and it has no members, so really there were no cliques
-                    num_cliques = 0;
-                  }
+                  // var num_cliques = results.length;
+                  // if((num_cliques === 1) && (results[0].num_members === 0)) {
+                  //   // we only got one record and it has no members, so really there were no cliques
+                  //   num_cliques = 0;
+                  // }
                   
-                  res.send({"cliques": results, "num_cliques": num_cliques});
+                  res.send(results[0]);
               }
           })
     })
