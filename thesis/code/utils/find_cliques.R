@@ -35,6 +35,7 @@ largest_cliques <- largest.cliques(g)
 if(nrow(d) == 0) {
 	graph_cliques <- list()
 	largest_cliques <- list()
+	largest_clique_size <- 0
 } else {
 	if(length(largest_cliques) != 0) {
 		largest_clique_size <- length(largest_cliques[[1]])
@@ -62,13 +63,13 @@ if(nrow(d) == 0) {
 # 	## update this to only insert one document into mongo
 	mongo_cliques <- list()
 	mongo_largest_cliques <- list()
-	for (i in 1:length(graph_cliques)) {
-		m <- g[graph_cliques[[i]]]
+	for (gc in graph_cliques) {
+		m <- g[gc]
 		members <- rownames(m)
 		mongo_cliques[[length(mongo_cliques) + 1]] <- list(size = length(members), members = members)
 	}
-	for (i in 1:length(largest_cliques)) {
-		m <- g[largest_cliques[[i]]]
+	for (lc in largest_cliques) {
+		m <- g[lc]
 		members <- rownames(m)
 		mongo_largest_cliques[[length(mongo_largest_cliques) + 1]] <- list(size = length(members), members = members)
 	}
@@ -77,8 +78,8 @@ if(nrow(d) == 0) {
 					analysis_id=analysis_id,
 					num_cliques = length(graph_cliques),
 					cliques = mongo_cliques,
-					largest_clique_size = largest_clique_size,
-		     		largest_cliques = mongo_cliques
+					largest_clique_size = unlist(largest_clique_size),
+		     		largest_cliques = mongo_largest_cliques
 					)
 				)
 	print(str(b))
