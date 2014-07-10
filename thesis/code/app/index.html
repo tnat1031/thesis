@@ -32,7 +32,7 @@
                     <div class="col-xs-6">
                       <select id="conn_space" name="conn_space" class="form-control">
                         <option value="summly">Across Cell Lines</option>
-                        <option value="vcap_erg">VCAP-ERG</option>
+                        <!-- <option value="vcap_erg">VCAP-ERG</option> -->
                         
                       </select>
                     </div>
@@ -118,8 +118,11 @@
 
         </div>
 
+        <hr>
 
         <div style="min-height:30px"></div>
+
+        <!-- the vis components -->
         <div class="row">
 <!--
             <div class="col-lg-4" id="tag_cloud">
@@ -151,7 +154,7 @@
                         <li class="list-group-item">Number of cliques: <span style="float: right"><strong id="num_cliques"></strong></span></li>
                         <li class="list-group-item">Clique density: <span style="float: right"><strong id="clique_density"></strong></span></li>
                         <li class="list-group-item">Clique density p-value: <span style="float: right"><strong id="clique_density_p"></strong></span></li>
-                        <li class="list-group-item">Largest clique size: <span style="float: right"><strong id="largest_clique_size"></strong></span></li>
+                        <li class="list-group-item">Largest clique size: <span style="float: right"><strong class="largest_clique_size"></strong></span></li>
                         <li class="list-group-item">Largest clique size p-value: <span style="float: right"><strong id="largest_clique_size_p"></strong></span></li>
                       </ul>
                     </div>
@@ -189,7 +192,23 @@
               </div>
 
               <!-- the graph -->
-              <div class="col-xs-9 dev" id="graph"></div>
+              <div class="col-xs-6" id="graph"></div>
+
+              <!-- largest clique members -->
+              <div class="col-xs-3">
+                <div class="panel panel-default">
+                      <!-- Default panel contents -->
+                      <div class="panel-heading">Members of Largest Clique <span style="float: right"><strong class="largest_clique_size"></strong></span></div>
+
+                      <div class="panel-body" id="largest_clique">
+                      </div>
+
+                      
+                  </div>
+              </div>
+
+
+
             </div>
 
         </div>
@@ -207,6 +226,9 @@
     var analysis_id = "query_" + new Date().getTime(); 
     console.log(analysis_id);
 
+    // get the connection space
+    var conn_space = $("#conn_space").val();
+
     // set up some functions
     function draw_graph(edge_color, node_color, nodes, edges) {
       // clear the svg and brush, if any
@@ -217,8 +239,8 @@
       //console.log(nodes);
       //console.log(edges);
       // draw the force-directed graph
-      var width = Math.max($("#graph").width(), 600);
-      var height = Math.max($("#graph").height(), 600);
+      var width = Math.max($("#graph").width(), 380); // 600
+      var height = Math.max($("#graph").height(), 380);
 
       var force = d3.layout.force()
         .charge(-120)
@@ -301,7 +323,8 @@
         $("#graph_container").css("visibility", "visible");
         $("#num_cliques").html(cliques.num_cliques);
         $("#clique_density").html(Math.round((cliques.num_cliques / node_collection.length) * 100) / 100);
-        $("#largest_clique_size").html(cliques.largest_clique_size);
+        $(".largest_clique_size").html(cliques.largest_clique_size);
+        $("#largest_clique").html(cliques.largest_cliques["1"].members.join("<br>")); // choose the first largest clique
     }
 
     // basic header and footer views
