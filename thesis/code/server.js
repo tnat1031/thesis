@@ -13,6 +13,7 @@ var dbloc = "mongodb://127.0.0.1:27017/thesis";
 var dump_dir = "/Users/tnatoli/github/thesis/thesis/code/app/data/tmp";
 var clique_script_path = "/Users/tnatoli/github/thesis/thesis/code/utils/find_cliques.R"
 
+// curated sets that should be interconnected
 var poscons = {
   "HDAC_simple": [
     "dacinostat",
