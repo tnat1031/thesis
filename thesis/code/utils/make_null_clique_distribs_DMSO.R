@@ -31,7 +31,7 @@ if(is.na(min_sample_size)) {
 }
 
 if(is.na(max_sample_size)) {
-	max_sample_size <- 20
+	max_sample_size <- 100
 }
 
 if(is.na(min_clique_size)) {
