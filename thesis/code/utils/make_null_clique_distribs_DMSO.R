@@ -77,7 +77,7 @@ get_cliques <- function(sig_ids, min_sample_size, max_sample_size, min_score, ma
 					largest_clique_size <- 0
 				}
 				tmp <- data.frame(sample_size=i,
-								  iteration=j,
+								  sig_id=sig_id,
 								  score=z,
 								  num_cliques=num_cliques,
 								  largest_clique_size=largest_clique_size)
