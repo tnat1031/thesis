@@ -37,15 +37,7 @@ if(is.na(min_clique_size)) {
 	min_clique_size <- 3
 }
 
-# read in dataset
-cat("reading in data...\n")
-d <- read.delim(space_file)
-
-summly <- read.delim(summly_file)
-
-
-
-
+# define main function
 get_cliques <- function(min_sample_size, max_sample_size, min_score, max_score) {
 	dlist <- list()
 	cat("iterating...\n")
@@ -99,7 +91,19 @@ get_cliques <- function(min_sample_size, max_sample_size, min_score, max_score) 
 	return(out)
 }
 
+# read in datasets
+cat("reading in data...\n")
+d <- read.delim(space_file)
+
+summly <- read.delim(summly_file)
+
+
+
+
+# get the cliques
 out <- get_cliques(min_sample_size, max_sample_size, min_score, max_score)
+
+
 # write null table out 
 cat("writing null table...\n")
 fname <- paste("null_cliques", basename(space_file), sep="_")
