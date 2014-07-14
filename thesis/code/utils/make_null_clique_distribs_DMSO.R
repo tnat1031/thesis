@@ -43,11 +43,9 @@ get_cliques <- function(sig_ids, min_sample_size, max_sample_size, min_score, ma
 	dlist <- list()
 	cat("iterating...\n")
 	for (sig_id in sig_ids) {
-		cat(paste(sig_id, "\t"))
 		for (i in min_sample_size:max_sample_size) {
-			cat(paste(i, "\t"))
 			for(z in min_score:max_score) {
-				cat(paste("\t", "\t", z, "\n"))
+				cat(paste(sig_id, "\t", i, "\t", z, "\n"))
 				# for every score
 				# subset to connection threshold
 				cat("subsetting...\n")
@@ -57,6 +55,7 @@ get_cliques <- function(sig_ids, min_sample_size, max_sample_size, min_score, ma
 				# get list of all nodes in dataset
 				cat("generating list of nodes...\n")
 				nodes <- unique(c(as.character(dsub$pert_iname_x), as.character(dsub$pert_iname_y)))
+				cat(paste("number of nodes", length(nodes), "\n"))
 				# make sure we have enough nodes to sample
 				if (length(nodes > i)) {
 					sample_space <- sample(nodes, i)
