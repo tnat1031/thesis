@@ -57,7 +57,13 @@ get_cliques <- function(sig_ids, min_sample_size, max_sample_size, min_score, ma
 				# get list of all nodes in dataset
 				cat("generating list of nodes...\n")
 				nodes <- unique(c(as.character(dsub$pert_iname_x), as.character(dsub$pert_iname_y)))
-				sample_space <- sample(nodes, i)
+				# make sure we have enough nodes to sample
+				if (length(nodes > i)) {
+					sample_space <- sample(nodes, i)
+				}
+				else {
+					sample_space <- nodes
+				}
 				
 				# look up their scores in summly space
 				cat("looking up scores...\n")
