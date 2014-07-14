@@ -57,7 +57,7 @@ get_cliques <- function(sig_ids, min_sample_size, max_sample_size, min_score, ma
 				nodes <- unique(c(as.character(dsub$pert_iname_x), as.character(dsub$pert_iname_y)))
 				cat(paste("number of nodes", length(nodes), "\n"))
 				# make sure we have enough nodes to sample
-				if (length(nodes > i)) {
+				if (length(nodes) > i) {
 					sample_space <- sample(nodes, i)
 				}
 				else {
