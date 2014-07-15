@@ -24,8 +24,8 @@ if __name__ == '__main__':
 	for s in sig_id_files:
 		for size in range(min_size, max_size + 1):
 			for score in range(min_score, max_score + 1):
-				dirname = os.path.join(outpath, s)
-				odir = os.path.join(outpath, dirname)
+				# dirname = os.path.join(outpath, s)
+				odir = os.path.join(outpath, s)
 				if not os.path.exists(odir):
 					os.mkdir(odir)
 				# Rscript code/utils/make_null_clique_distribs.R data/matched_lass_n10644x7533.txt ./ 90 90 5 5
