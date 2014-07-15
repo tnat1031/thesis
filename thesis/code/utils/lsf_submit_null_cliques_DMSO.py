@@ -9,12 +9,13 @@ if __name__ == '__main__':
 	rscript_file = sys.argv[1]
 	space_file = sys.argv[2]
 	summly_file = sys.argv[3]
-	sig_id_file = sys.argv[4]
-	outpath = sys.argv[5]
-	min_size = sys.argv[6]
-	max_size = sys.argv[7]
-	min_score = sys.argv[8]
-	max_score = sys.argv[9]
+	list_of_sig_ids = sys.argv[4]
+	sig_id_file_path = sys.argv[5]
+	outpath = sys.argv[6]
+	min_size = sys.argv[7]
+	max_size = sys.argv[8]
+	min_score = sys.argv[9]
+	max_score = sys.argv[10]
 
 	# loop through scores and sample sizes
 	for size in range(min_size, max_size + 1):
