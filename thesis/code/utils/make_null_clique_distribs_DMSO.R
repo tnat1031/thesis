@@ -112,6 +112,6 @@ out <- get_cliques(sig_ids, min_sample_size, max_sample_size, min_score, max_sco
 
 # write null table out 
 cat("writing null table...\n")
-fname <- paste("null_cliques", basename(space_file), sep="_")
+fname <- paste("null_cliques", min_score, max_score, min_sample_size, max_sample_size, basename(space_file), sep="_")
 write.table(out, paste(outpath, fname, sep="/"), col.names=T, row.names=F, sep="\t", quote=F)
 
