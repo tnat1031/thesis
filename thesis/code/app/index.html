@@ -9,6 +9,9 @@
   <body><!-- header view target -->
     <div class="cmap-shadow">
       <div id="header_target"></div>
+      <div style="text-align: center">
+        <span><a class="cmap-link" id="take_a_tour">take a tour</a></span>
+      </div>
     </div>
 
   <div style="min-height:30px"></div>
@@ -30,7 +33,7 @@
                   <div class="form-group">
                     <label class="col-xs-4 control-label" for="conn_space">Connectivity Space:</label>
                     <div class="col-xs-6">
-                      <select id="conn_space" name="conn_space" class="form-control">
+                      <select id="conn_space" name="conn_space" class="form-control" data-step="1" data-intro="Select the connectivity space in which to perform your analysis." data-position="right">
                         <option value="summly">Across Cell Lines</option>
                         <!-- <option value="vcap_erg">VCAP-ERG</option> -->
                         
@@ -41,7 +44,7 @@
                   <div class="form-group">
                     <label class="col-xs-4 control-label" for="threshold">Score threshold:</label>  
                       <div class="col-xs-6">
-                        <select id="threshold" name="threshold" class="form-control"> 
+                        <select id="threshold" name="threshold" class="form-control" data-step="2" data-intro="Set the threshold above which to call a connection." data-position="right"> 
                           <option value="90">90</option>
                           <option value="91">91</option>
                           <option value="92">92</option>
@@ -66,7 +69,7 @@
                   <div class="form-group">
                     <label class="col-xs-4 control-label" for="nodes">Nodes to Graph:</label>
                     <div class="col-xs-8">
-                      <textarea class="form-control" id="nodes" name="nodes"></textarea>
+                      <textarea class="form-control" id="nodes" name="nodes" data-step="3" data-intro="Paste in names of perturbations to graph." data-position="right"></textarea>
                     </div>
                   </div>
                   <div class="row">
@@ -76,7 +79,7 @@
                   <div class="form-group">
                     <label class="col-xs-4 control-label" for="poscon">Poscon Set:</label>
                     <div class="col-xs-8">
-                      <select id="poscon" name="poscon" class="form-control">
+                      <select id="poscon" name="poscon" class="form-control" data-step="4" data-intro="OR select from example sets of perturbations." data-position="right">
                         <option value="HDAC_simple">HDAC inhibitors (simple)</option>
                         <option value="HDAC_inhibitor">HDAC inhibitors (expanded)</option>
                         <option value="HDAC_plus_PI3K_inhibitor">HDAC inhibitors & PI3K inhibitors</option>
@@ -93,13 +96,13 @@
                     <div class="col-xs-4">
                     <div class="radio">
                       <label for="pointer">
-                        <input type="radio" name="cursor" id="pointer" value="pointer" checked="checked">
+                        <input type="radio" name="cursor" id="pointer" value="pointer" checked="checked" data-step="9" data-intro="Set the cursor to a pointer to drag and reposition nodes..." data-position="left">
                         pointer
                       </label>
                     </div>
                     <div class="radio">
                       <label for="brush">
-                        <input type="radio" name="cursor" id="brush" value="brush">
+                        <input type="radio" name="cursor" id="brush" value="brush" data-step="10" data-intro="OR to a brush to highlight multiple nodes." data-position="left">
                         brush
                       </label>
                     </div>
@@ -109,7 +112,7 @@
                   <!-- Button -->
                   <div class="form-group">
                     <!-- <label class="col-xs-4 control-label" for="redraw"></label> -->
-                      <button id="redraw" name="redraw" class="btn btn-primary col-xs-4 col-xs-offset-4">Redraw</button>
+                      <button id="redraw" name="redraw" class="btn btn-primary col-xs-4 col-xs-offset-4" data-step="11" data-intro="Click this button to re-draw the graph if after changing any parameters." data-position="left">Redraw</button>
                   </div>
                 </div>
 
@@ -144,7 +147,7 @@
               <!-- clique stats -->
               <div class="col-xs-3">
                 <div class="row">
-                  <div class="col-xs-12" id="clique_stats">
+                  <div class="col-xs-12" id="clique_stats" data-step="6" data-intro="Stats on the graph are displayed here." data-position="right">
                     <div class="panel panel-default">
                       <!-- Default panel contents -->
                       <div class="panel-heading">Graph Stats</div>
@@ -172,7 +175,7 @@
                           <div class="form-group">
                             <label class="col-xs-4 control-label" for="highlight">Highlight nodes:</label>
                             <div class="col-xs-8">
-                              <textarea class="form-control" id="highlight" name="highlight"></textarea>
+                              <textarea class="form-control" id="highlight" name="highlight" data-step="8" data-intro="Paste or type in names of pertubagens to highlight in the graph." data-position="right"></textarea>
                             </div>
                           </div>
 
@@ -192,11 +195,11 @@
               </div>
 
               <!-- the graph -->
-              <div class="col-xs-6" id="graph"></div>
+              <div class="col-xs-6" id="graph" data-step="5" data-intro="The graph of interconnectivity is displayed here. Click nodes to reposition them. Hover over nodes to see their identities." data-position="right"></div>
 
               <!-- largest clique members -->
               <div class="col-xs-3">
-                <div class="panel panel-default">
+                <div class="panel panel-default" data-step="7" data-intro="The members of the largest clique are listed here." data-position="left">
                       <!-- Default panel contents -->
                       <div class="panel-heading">Members of Largest Clique <span style="float: right"><strong class="largest_clique_size"></strong></span></div>
 
@@ -424,6 +427,11 @@
           })
         });
     })
+
+  // take a tour
+  $("#take_a_tour").click(function(){
+    introJs().start();
+  });
 
     
 
