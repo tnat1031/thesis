@@ -216,6 +216,10 @@
 
         </div>
       </div>
+
+      <!-- hidden textarea to store pert_inames -->
+      <textarea style="display: none" id="pert_inames"></textarea>
+
     </div>
 
     <div class="row"></div>
@@ -225,12 +229,26 @@
   <script src="libraries/barista.main.min.js"></script>
   <!--<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>-->
   <script type="text/javascript">
+
     // define analysis_id
     var analysis_id = "query_" + new Date().getTime(); 
     console.log(analysis_id);
 
     // get the connection space
     var conn_space = $("#conn_space").val();
+
+    // get list of pert_inames from database
+    $.ajax({
+      url: "/get_inames/" + conn_space,
+      type: "GET",
+      dataType: "json",
+      success: function(response) {
+        $("#pert_inames").val(response.members);
+      },
+      error: function(err) {
+        console.error(err);
+      }
+    })
 
     // set up some functions
     function draw_graph(edge_color, node_color, nodes, edges) {
@@ -327,7 +345,13 @@
         $("#num_cliques").html(cliques.num_cliques);
         $("#clique_density").html(Math.round((cliques.num_cliques / node_collection.length) * 100) / 100);
         $(".largest_clique_size").html(cliques.largest_clique_size);
+        $("#largest_clique").html(''); // clear previous values
         $("#largest_clique").html(cliques.largest_cliques["1"].members.join("<br>")); // choose the first largest clique
+        // highlight the largest clique members
+        cliques.largest_cliques["1"].members.forEach(function(member) {
+          d3.select("#" + member)
+                    .attr("class", "selected");
+        })
     }
 
     // basic header and footer views
@@ -409,6 +433,12 @@
       $("#nodes").val().split("\n").forEach(function(node) {
         if (node !== "") nodes.push(node);
       })
+      // check if any nodes are not in the pert_iname set
+      var known = $("#pert_inames").val().split(",");
+      var unrecognized = _.difference(nodes, known);
+      if (unrecognized.length > 0) {
+        alert("These inputs were not recognized:\n" + unrecognized.join("\n"));
+      }
       //nodes = nodes.length > 0 ? nodes : false;
       var query = $.ajax({
         url: "/get_connections/" + collection + "?poscon=" + poscon + "&thresh=" + threshold + "&analysis_id=" + analysis_id, 

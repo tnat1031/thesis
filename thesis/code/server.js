@@ -340,4 +340,25 @@ app.get('/get_cliques/:analysis_id', function(req, res) {
     })
 })
 
+app.get('/get_inames/:space', function(req, res) {
+  var space = req.params.space;
+  MongoClient.connect(dbloc, function(err, db) {
+      if(err) throw(err);
+      var collection = db.collection('members');
+      collection.find({"space": space}).toArray(function(err, results) {
+              if (err) {
+                  console.error(err);
+              } else {
+                  // var num_cliques = results.length;
+                  // if((num_cliques === 1) && (results[0].num_members === 0)) {
+                  //   // we only got one record and it has no members, so really there were no cliques
+                  //   num_cliques = 0;
+                  // }
+                  
+                  res.send(results[0]);
+              }
+          })
+    })
+})
+
 app.listen(8080);

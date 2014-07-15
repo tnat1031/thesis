@@ -38,7 +38,14 @@ if(nrow(d) == 0) {
 	largest_clique_size <- 0
 } else {
 	if(length(largest_cliques) != 0) {
-		largest_clique_size <- length(largest_cliques[[1]])
+		if (length(largest_cliques[[1]]) > 2) {
+			# need at least 3 members in the largest clique
+			largest_clique_size <- length(largest_cliques[[1]])
+		}
+		else {
+			largest_clique_size <- 0
+			largest_cliques <- list()
+		}
 	} else {
 		largest_clique_size <- 0
 	}
