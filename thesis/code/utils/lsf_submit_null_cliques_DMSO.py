@@ -13,10 +13,10 @@ if __name__ == '__main__':
 	list_of_sig_ids = sys.argv[4]
 	sig_id_file_path = sys.argv[5]
 	outpath = sys.argv[6]
-	min_size = sys.argv[7]
-	max_size = sys.argv[8]
-	min_score = sys.argv[9]
-	max_score = sys.argv[10]
+	min_size = int(sys.argv[7])
+	max_size = int(sys.argv[8])
+	min_score = int(sys.argv[9])
+	max_score = int(sys.argv[10])
 
 	sig_id_files = grp.read_grp(list_of_sig_ids)
 
