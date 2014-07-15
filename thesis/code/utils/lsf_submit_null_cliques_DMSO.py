@@ -22,13 +22,13 @@ if __name__ == '__main__':
 
 	# loop through scores and sample sizes and sig_id files
 	for s in sig_id_files:
-		for size in range(min_size, max_size + 1):
-			for score in range(min_score, max_score + 1):
+		# for size in range(min_size, max_size + 1):
+		# 	for score in range(min_score, max_score + 1):
 				# dirname = os.path.join(outpath, s)
-				odir = os.path.join(outpath, s)
-				if not os.path.exists(odir):
-					os.mkdir(odir)
-				# Rscript code/utils/make_null_clique_distribs.R data/matched_lass_n10644x7533.txt ./ 90 90 5 5
-				cmd = 'bsub -P cmap -J dmso_{0}_{1} -o {2} -q week -R rusage[mem=4] Rscript {3} {4} {5} {6} {7} {8} {9} {10} {11}'.format(score, size, os.path.join(odir, 'lsf.out'), rscript_file, space_file, summly_file, os.path.join(sig_id_file_path, s), odir, score, score, size, size)
-				print cmd
-				#os.system(cmd)
+		odir = os.path.join(outpath, s)
+		if not os.path.exists(odir):
+			os.mkdir(odir)
+		# Rscript code/utils/make_null_clique_distribs.R data/matched_lass_n10644x7533.txt ./ 90 90 5 5
+		cmd = 'bsub -P cmap -J dmso_{0} -o {1} -q week -R rusage[mem=4] Rscript {2} {3} {4} {5} {6} {7} {8} {9} {10}'.format(s, os.path.join(odir, 'lsf.out'), rscript_file, space_file, summly_file, os.path.join(sig_id_file_path, s), odir, min_score, max_score, min_size, max_size)
+		print cmd
+		#os.system(cmd)
