@@ -24,7 +24,7 @@ if __name__ == '__main__':
 	for s in sig_id_files:
 		for size in range(min_size, max_size + 1):
 			for score in range(min_score, max_score + 1):
-				dirname = 'null_cliques_size_' + str(size) + '_score_' + str(score)
+				dirname = os.path.join(outpath, s)
 				odir = os.path.join(outpath, dirname)
 				if not os.path.exists(odir):
 					os.mkdir(odir)
