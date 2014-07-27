@@ -45,34 +45,32 @@ get_cliques <- function(sig_ids, min_sample_size, max_sample_size, min_score, ma
 	cat("iterating...\n")
 	for (sig_id in sig_ids) {
 		for (i in min_sample_size:max_sample_size) {
+			# subset to sig_id and take a sample
+			dsub <- droplevels(subset(d, id_y == sig_id))
+			# get list of all nodes in dataset
+			cat("generating list of nodes...\n")
+			nodes <- unique(c(as.character(dsub$pert_iname_x), as.character(dsub$pert_iname_y)))
+			# make sure we have enough nodes to sample
+			if (length(nodes) > i) {
+				sample_space <- sample(nodes, i)
+			}
+			else {
+				sample_space <- nodes
+			}
+			# look up their scores in summly space
+			cat("looking up scores...\n")
+			summly_sub <- droplevels(subset(summly, pert_iname_x %in% sample_space & pert_iname_y %in% sample_space,
+											select=c("pert_iname_x", "pert_iname_y", "score")))
+			
 			for(z in min_score:max_score) {
 				cat(paste(sig_id, "\t", i, "\t", z, "\n"))
 				# for every score
 				# subset to connection threshold
 				cat("subsetting...\n")
-				dsub <- droplevels(subset(d, abs(score) >= z & id_y == sig_id))
-				dsub <- droplevels(dsub[, c("pert_iname_x", "pert_iname_y")])
-				
-				# get list of all nodes in dataset
-				cat("generating list of nodes...\n")
-				nodes <- unique(c(as.character(dsub$pert_iname_x), as.character(dsub$pert_iname_y)))
-				cat(paste("number of nodes", length(nodes), "\n"))
-				# make sure we have enough nodes to sample
-				if (length(nodes) > i) {
-					sample_space <- sample(nodes, i)
-				}
-				else {
-					sample_space <- nodes
-				}
-				
-				# look up their scores in summly space
-				cat("looking up scores...\n")
-				summly_sub <- droplevels(subset(summly, pert_iname_x %in% sample_space & pert_iname_y %in% sample_space,
-											select=c("pert_iname_x", "pert_iname_y")))
-				
+				for_graph <- droplevels(subset(summly_sub, abs(score) >= z, select=c("pert_iname_x", "pert_iname_y")))
 				# generate the graph anc compute some stats
 				cat("generating graph...\n")
-				g <- graph.data.frame(summly_sub, directed=F)
+				g <- graph.data.frame(for_graph, directed=F)
 				graph_cliques <- cliques(g, min=min_clique_size)
 				num_cliques <- length(graph_cliques)
 				largest_cliques <- largest.cliques(g)
