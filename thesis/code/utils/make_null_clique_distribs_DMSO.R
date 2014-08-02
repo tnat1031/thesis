@@ -44,12 +44,16 @@ get_cliques <- function(sig_ids, min_sample_size, max_sample_size, min_score, ma
 	dlist <- list()
 	cat("iterating...\n")
 	for (sig_id in sig_ids) {
+		# subset to sig_id and take a sample
+		dsub <- droplevels(subset(d, id_y == sig_id))
+		# sort by absolute score
+		dsub <- dsub[order(dsub$abs_score, decreasing=T), ]
 		for (i in min_sample_size:max_sample_size) {
-			# subset to sig_id and take a sample
-			dsub <- droplevels(subset(d, id_y == sig_id))
+			# take the top i rows (connections)
+			dsub2 <- dsub[1:i, ]
 			# get list of all nodes in dataset
 			cat("generating list of nodes...\n")
-			nodes <- unique(c(as.character(dsub$pert_iname_x), as.character(dsub$pert_iname_y)))
+			nodes <- unique(c(as.character(dsub2$pert_iname_x), as.character(dsub2$pert_iname_y)))
 			# make sure we have enough nodes to sample
 			if (length(nodes) > i) {
 				sample_space <- sample(nodes, i)
