@@ -24,7 +24,7 @@ if(is.na(min_clique_size)) {
 }
 
 # define main function
-get_cliques <- function(sig_ids, sizes, scores) {
+get_cliques <- function(sig_ids, sizes, scores, fname) {
 	dlist <- list()
 	cat("iterating...\n")
 	for (sig_id in sig_ids) {
@@ -74,6 +74,10 @@ get_cliques <- function(sig_ids, sizes, scores) {
 								  num_cliques=num_cliques,
 								  largest_clique_size=largest_clique_size)
 				dlist[[length(dlist) + 1]] <- tmp
+				# write null table out at each step
+				cat("writing null table...\n")
+				out <- do.call("rbind", dlist)
+				write.table(out, paste(outpath, fname, sep="/"), col.names=T, row.names=F, sep="\t", quote=F)
 			}
 		}
 	}
@@ -90,7 +94,7 @@ sig_ids <- parse.grp(sig_id_file)
 summly <- read.delim(summly_file)
 
 
-
+fname <- paste("null_cliques", basename(space_file), sep="_")
 
 # get the cliques
 out <- get_cliques(sig_ids, sizes, scores)
@@ -98,6 +102,5 @@ out <- get_cliques(sig_ids, sizes, scores)
 
 # write null table out 
 cat("writing null table...\n")
-fname <- paste("null_cliques", basename(space_file), sep="_")
 write.table(out, paste(outpath, fname, sep="/"), col.names=T, row.names=F, sep="\t", quote=F)
 
