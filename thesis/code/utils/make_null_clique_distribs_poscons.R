@@ -97,7 +97,7 @@ summly <- read.delim(summly_file)
 fname <- paste("null_cliques", basename(space_file), sep="_")
 
 # get the cliques
-out <- get_cliques(sig_ids, sizes, scores)
+out <- get_cliques(sig_ids, sizes, scores, fname)
 
 
 # write null table out 
