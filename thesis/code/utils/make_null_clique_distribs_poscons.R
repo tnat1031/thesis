@@ -18,21 +18,6 @@ min_clique_size <- args[5]
 sizes <- c(10, 20, 30, 40, 50)
 scores <- c(90, 92, 94, 96, 98)
 
-if(is.na(min_score)) {
-	min_score <- 90
-}
-
-if(is.na(max_score)) {
-	max_score <- 99
-}
-
-if(is.na(min_sample_size)) {
-	min_sample_size <- 2
-}
-
-if(is.na(max_sample_size)) {
-	max_sample_size <- 100
-}
 
 if(is.na(min_clique_size)) {
 	min_clique_size <- 3
