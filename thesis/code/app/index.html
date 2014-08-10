@@ -69,7 +69,14 @@
                   <div class="form-group">
                     <label class="col-xs-4 control-label" for="nodes">Nodes to Graph:</label>
                     <div class="col-xs-8">
-                      <textarea class="form-control" id="nodes" name="nodes" data-step="3" data-intro="Paste in names of perturbations to graph." data-position="right"></textarea>
+                      <textarea class="form-control" id="nodes" name="nodes" data-step="3" data-intro="Paste in up to 100 names of perturbagens to graph." data-position="right"></textarea>
+                    </div>
+                  </div>
+                  <!-- Button -->
+                  <div class="form-group">
+                    <label class="col-xs-4 control-label" for="singlebutton"></label>
+                    <div class="col-xs-8">
+                      <button name="singlebutton" class="btn btn-default" id="clear_nodes" type="button">Clear</button>
                     </div>
                   </div>
                   <div class="row">
@@ -77,13 +84,14 @@
                   </div>
                   <!-- poscon set -->
                   <div class="form-group">
-                    <label class="col-xs-4 control-label" for="poscon">Poscon Set:</label>
+                    <label class="col-xs-4 control-label" for="poscon">Example Set:</label>
                     <div class="col-xs-8">
-                      <select id="poscon" name="poscon" class="form-control" data-step="4" data-intro="OR select from example sets of perturbations." data-position="right">
-                        <option value="HDAC_simple">HDAC inhibitors (simple)</option>
-                        <option value="HDAC_inhibitor">HDAC inhibitors (expanded)</option>
-                        <option value="HDAC_plus_PI3K_inhibitor">HDAC inhibitors & PI3K inhibitors</option>
-                        <option value="HDAC_plus_random">HDAC inhibitors & random</option>
+                      <select id="poscon" name="poscon" class="form-control" data-step="4" data-intro="OR select from example sets of query results." data-position="right">
+                        <option value="mek">MEK inhibitor</option>
+                        <option value="pi3k_mtor">PI3K/MTOR inhibitior</option>
+                        <option value="hmgcr">HMGCR inhibitior</option>
+                        <option value="glucocorticoid">Glucocorticoid agonist</option>
+                        <option value="proteasome">Proteasome inhibitor</option>
                       </select>
                     </div>
                   </div>
@@ -230,6 +238,69 @@
   <!--<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>-->
   <script type="text/javascript">
 
+    var example_queries = {
+      "mek": [
+        "selumetinib",
+        "AS-605240",
+        "PD-0325901",
+        "U0126",
+        "U-0126",
+        "PD-0325901",
+        "AS-703026",
+        "AZ-628",
+        "MEK1-2-inhibitor",
+        "PD-184352"
+      ],
+      "pi3k_mtor": [
+        "KU-0063794",
+        "AZD-8055",
+        "NVP-BEZ235",
+        "PP-110",
+        "PI-828",
+        "TGX-115",
+        "PI-103",
+        "MTOR",
+        "AFF4",
+        "BMS-536924"
+      ],
+      "hmgcr": [
+        "lovastatin",
+        "selumetinib",
+        "PIK3R1",
+        "MSH2",
+        "neratinib",
+        "BMS-536924",
+        "BMS-754807",
+        "TXNIP",
+        "simvastatin",
+        "5-nonyloxytryptamine"
+      ],
+      "glucocorticoid": [
+        "UBL5",
+        "TPCA-1",
+        "fluticasone",
+        "ETV1",
+        "CCDC92",
+        "RHO-kinase-inhibitor-III[rockout]",
+        "COPS5",
+        "dexamethasone",
+        "GAMT",
+        "forskolin"
+      ],
+      "proteasome": [
+        "PSMD1",
+        "bortezomib",
+        "PSMA1",
+        "MLN-2238",
+        "VCP",
+        "HSPA5",
+        "radicicol",
+        "PSMB2",
+        "MG-132",
+        "tosedostat"
+      ]
+    };
+
     // define analysis_id
     var analysis_id = "query_" + new Date().getTime(); 
     console.log(analysis_id);
@@ -344,7 +415,9 @@
         $("#graph_container").css("visibility", "visible");
         $("#num_cliques").html(cliques.num_cliques);
         $("#clique_density").html(Math.round((cliques.num_cliques / node_collection.length) * 100) / 100);
+        $("#clique_density_p").html(cliques.clique_density_p);
         $(".largest_clique_size").html(cliques.largest_clique_size);
+        $("#largest_clique_size_p").html(cliques.largest_clique_size_p);
         $("#largest_clique").html(''); // clear previous values
         $("#largest_clique").html(cliques.largest_cliques["1"].members.join("<br>")); // choose the first largest clique
         // highlight the largest clique members
@@ -373,17 +446,57 @@
 
     // fetch data and draw the graph upon page load
     var collection = $("#conn_space").val();
-    $.getJSON("/get_connections/" + collection + "?poscon=HDAC_simple&analysis_id=" + analysis_id).done(function(response) {
-      node_collection.reset(response.nodes);
-      edge_collection.reset(response.edges);
-      draw_graph(edge_color, node_color, node_collection.toJSON(), edge_collection.toJSON());
-      console.log(analysis_id);
-      // fetch the corresponding cliques
-      $.getJSON("/get_cliques/" + analysis_id).done(function(cliques) {
-        console.log(cliques);
-        show_graph_and_stats(cliques);
-      })
+    var threshold = parseFloat($("#threshold").val());
+    var example_set = $("#poscon").val();
+    var query = $.ajax({
+      url: "/get_connections/" + collection + "?thresh=" + threshold + "&analysis_id=" + analysis_id,
+      type: "GET",
+      dataType: "json",
+      data: {nodes: example_queries[example_set]}
+      }).done(function(response) {
+        node_collection.reset(response.nodes);
+        edge_collection.reset(response.edges);
+        draw_graph(edge_color, node_color, node_collection.toJSON(), edge_collection.toJSON());
+        console.log(analysis_id);
+        get_cliques(analysis_id, threshold, example_queries[example_set].length);
     });
+
+    get_cliques = function(analysis_id, threshold, sample_size) {
+      // fetch the corresponding cliques
+      $.ajax({
+        url: "/get_cliques/" + analysis_id,
+        type: "GET",
+        dataType: "json",
+        success: function(cliques) {
+          console.log(cliques);
+          // get the p-values
+          $.ajax({
+            url: "/get_p_values",
+            type: "GET",
+            dataType: "json",
+            data: {
+              "sample_size": sample_size,
+              "threshold": threshold,
+              "num_cliques": cliques.num_cliques,
+              "largest_clique_size": cliques.largest_clique_size
+            },
+            success: function(p_values) {
+              console.log(p_values);
+              cliques["clique_density_p"] = p_values.clique_density_p;
+              cliques["largest_clique_size_p"] = p_values.largest_clique_size_p;
+              show_graph_and_stats(cliques);
+            },
+            error: function(err) {
+              console.error(err);
+            }
+          })
+        },
+        error: function(err) {
+          console.error(err);
+        }
+      })
+    }
+
 
     // parse input from textarea
     $("#submit").click(function(event) {
@@ -396,12 +509,28 @@
         })
     })
 
-    // clear any selections
-    $("#clear").click(function(event) {
-        $("#highlight").val("");
+    clear_selections = function() {
+      $("#highlight").val("");
         d3.selectAll(".selected")
                 .attr("class", "node");
                 //.attr("r", 6);
+    }
+
+    // clear any selections
+    $("#clear").click(function(event) {
+        clear_selections();
+    })
+
+    clear_nodes = function() {
+      $("#nodes").val("");
+    }
+    
+    // clear any selections
+    $("#clear_nodes").click(function(event) {
+        clear_nodes();
+    })
+    $("#poscon").change(function(event) {
+      clear_nodes();
     })
 
     // listen to radio buttons
@@ -418,6 +547,7 @@
     // process input from poscon set and query space dropdown
     $("#redraw").click(function(event) {
       event.preventDefault();
+      clear_selections();
       // hide the graph and show the loading group
       $("#graph_container").css("visibility", "hidden");
       $("#loading_group").show(500);
@@ -426,13 +556,17 @@
       // fade out the current nodes and edges
       d3.selectAll(".node").transition().attr("r", 0).remove();
       d3.selectAll(".link").transition().style("stroke", "white").remove();
-      var poscon = $("#poscon").val();
+      var example_set = $("#poscon").val();
       var collection = $("#conn_space").val();
       var threshold = parseFloat($("#threshold").val());
       var nodes = [];
       $("#nodes").val().split("\n").forEach(function(node) {
         if (node !== "") nodes.push(node);
       })
+      // use input nodes if any, else example set
+      nodes = nodes.length > 0 ? nodes : example_queries[example_set];
+      // use only 100 nodes even if they input more
+      nodes = nodes.length <= 100 ? nodes : nodes.slice(0, 101);
       // check if any nodes are not in the pert_iname set
       var known = $("#pert_inames").val().split(",");
       var unrecognized = _.difference(nodes, known);
@@ -441,7 +575,7 @@
       }
       //nodes = nodes.length > 0 ? nodes : false;
       var query = $.ajax({
-        url: "/get_connections/" + collection + "?poscon=" + poscon + "&thresh=" + threshold + "&analysis_id=" + analysis_id, 
+        url: "/get_connections/" + collection + "?thresh=" + threshold + "&analysis_id=" + analysis_id, 
         type: "GET",
         dataType: "json",
         data: {"nodes": nodes}
@@ -451,10 +585,7 @@
           draw_graph(edge_color, node_color, node_collection.toJSON(), edge_collection.toJSON());
           console.log(analysis_id);
           // fetch the corresponding cliques
-          $.getJSON("/get_cliques/" + analysis_id).done(function(cliques) {
-            console.log(cliques.num_cliques);
-            show_graph_and_stats(cliques);
-          })
+          get_cliques(analysis_id, threshold, nodes.length);
         });
     })
 
@@ -463,46 +594,6 @@
     introJs().start();
   });
 
-    
-
-    // d3.json("/get_connections/connections?poscon=HDAC_plus_PI3K_inhibitor&nodes_only=true", function(error, graph) {
-    //   console.log(graph);
-    
-
-    // });
-
-//    generating tag cloud
-//      var fill = d3.scale.category20();
-//
-//      d3.layout.cloud().size([300, 300])
-//          .words([
-//            "HDAC inhibitor", "histone", "vorinostat", "panobinostat", "HDAC3", "HDAC6", "trichostatin-a","romidepsin"].map(function(d) {
-//            return {text: d, size: 10 + Math.random() * 50};
-//          }))
-//          .rotate(function() { return ~~(Math.random() * 2) * 90; })
-//          .font("Impact")
-//          .fontSize(function(d) { return d.size; })
-//          .on("end", draw)
-//          .start();
-//
-//      function draw(words) {
-//        d3.select("#tag_cloud").append("svg")
-//            .attr("width", 300)
-//            .attr("height", 300)
-//          .append("g")
-//            .attr("transform", "translate(150,150)")
-//          .selectAll("text")
-//            .data(words)
-//          .enter().append("text")
-//            .style("font-size", function(d) { return d.size + "px"; })
-//            .style("font-family", "Impact")
-//            .style("fill", function(d, i) { return fill(i); })
-//            .attr("text-anchor", "middle")
-//            .attr("transform", function(d) {
-//              return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-//            })
-//            .text(function(d) { return d.text; });
-//      }
 
   </script>
 </html>

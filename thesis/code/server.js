@@ -214,9 +214,12 @@ app.get('/get_connections/:collection', function(req, res) {
     var collection_name = req.params.collection;
     var limit = parseInt(req.query.limit);
     var thresh = req.query.thresh ? req.query.thresh : 90;
-    var poscon_set = req.query.poscon;
+    //var poscon_set = req.query.poscon;
     var skip = req.query.skip ? parseInt(req.query.skip) : 0;
     var nodes = req.query.nodes ? req.query.nodes : false;
+    if (!nodes) {
+      res.send(500, "no nodes specified");
+    }
     // make a time-stamp directory
     var ts_dir = req.query.analysis_id ? req.query.analysis_id : "query_" + new Date().getTime();
     var outdir = dump_dir + "/" + ts_dir;
@@ -229,93 +232,37 @@ app.get('/get_connections/:collection', function(req, res) {
     // var edges_only = typeof(req.query.egdes_only) !== 'undefined' ? edges_only : false;
     // var random = req.query.random : true ? false;
     MongoClient.connect(dbloc, function(err, db) {
-        if(err) throw(err);
-        var collection = db.collection(collection_name);
-        if (nodes) {
-            // request has specified specific nodes to search for, use them
-          collection.find({
-            "$and": [
-              {"pert_iname_x": {"$in": nodes}},
-              {"pert_iname_y": {"$in": nodes}}
-            ]
-          }).toArray(function(err, results) {
-              if (err) {
-                  console.error(err);
-              } else {
-                  console.log(results.length + " results");
-                  nodes_and_edges = make_nodes_and_edges(results, thresh);
-                  dump_edges(nodes_and_edges.nodes, nodes_and_edges.edges, "edges.txt", outdir);
-                  var clique = spawn("/usr/bin/Rscript", [clique_script_path, edge_file, ts_dir]);
-                  //console.log(clique);
-                  //console.log("/usr/bin/Rscript", + [clique_script_path, edge_file, ts_dir].join(" "));
-                  clique.stdout.on("data", function(data) {
-                    console.log(String(data));
-                  })
-                  clique.stderr.on("data", function(data) {
-                    console.error(String(data));
-                  })
-                  clique.on("exit", function(code) {
-                    console.log(code);
-                    res.send(nodes_and_edges);
-                  })
-              }
-          })
-        }
-        else if (poscon_set === undefined) {
-            // no nodes or poscon set defined, just return however many nodes specified
-          collection.find({}, {limit:limit, skip:skip}).toArray(function(err, results) {
-              if (err) {
-                  console.error(err);
-              } else {
-                  nodes_and_edges = make_nodes_and_edges(results, thresh);
-                  dump_edges(nodes_and_edges.nodes, nodes_and_edges.edges, "edges.txt", outdir);
-                  var clique = spawn("/usr/bin/Rscript", [clique_script_path, edge_file, ts_dir]);
-                  //console.log(clique);
-                  //console.log("/usr/bin/Rscript", + [clique_script_path, edge_file, ts_dir].join(" "));
-                  clique.stdout.on("data", function(data) {
-                    console.log(String(data));
-                  })
-                  clique.stderr.on("data", function(data) {
-                    console.error(String(data));
-                  })
-                  clique.on("exit", function(code) {
-                    console.log(code);
-                    res.send(nodes_and_edges);
-                  })
-              }
-          })
-        }
-        else {
-            // poscon set was specified, return it
-          collection.find({
-            "$and": [
-              {"pert_iname_x": {"$in": poscons[poscon_set]}},
-              {"pert_iname_y": {"$in": poscons[poscon_set]}}
-            ]
-          }).toArray(function(err, results) {
-              if (err) {
-                  console.error(err);
-              } else {
-                  console.log(results.length + " results");
-                  nodes_and_edges = make_nodes_and_edges(results, thresh);
-                  dump_edges(nodes_and_edges.nodes, nodes_and_edges.edges, "edges.txt", outdir);
-                  var clique = spawn("/usr/bin/Rscript", [clique_script_path, edge_file, ts_dir]);
-                  //console.log(clique);
-                  //console.log("/usr/bin/Rscript", + [clique_script_path, edge_file, ts_dir].join(" "));
-                  clique.stdout.on("data", function(data) {
-                    console.log(String(data));
-                  })
-                  clique.stderr.on("data", function(data) {
-                    console.error(String(data));
-                  })
-                  clique.on("exit", function(code) {
-                    console.log(code);
-                    res.send(nodes_and_edges);
-                  })
-              }
-          })
-        }
-    })
+      if(err) console.error(err);
+      var collection = db.collection(collection_name);
+      // request has specified specific nodes to search for, use them
+      collection.find({
+        "$and": [
+          {"pert_iname_x": {"$in": nodes}},
+          {"pert_iname_y": {"$in": nodes}}
+        ]
+      }).toArray(function(err, results) {
+          if (err) {
+              console.error(err);
+          } else {
+              console.log(results.length + " results");
+              nodes_and_edges = make_nodes_and_edges(results, thresh);
+              dump_edges(nodes_and_edges.nodes, nodes_and_edges.edges, "edges.txt", outdir);
+              var clique = spawn("/usr/bin/Rscript", [clique_script_path, edge_file, ts_dir]);
+              //console.log(clique);
+              //console.log("/usr/bin/Rscript", + [clique_script_path, edge_file, ts_dir].join(" "));
+              clique.stdout.on("data", function(data) {
+                console.log(String(data));
+              })
+              clique.stderr.on("data", function(data) {
+                console.error(String(data));
+              })
+              clique.on("exit", function(code) {
+                console.log(code);
+                res.send(nodes_and_edges);
+              })
+          }
+      })
+    })  
 })
 
 app.get('/get_cliques/:analysis_id', function(req, res) {
@@ -343,7 +290,7 @@ app.get('/get_cliques/:analysis_id', function(req, res) {
 app.get('/get_inames/:space', function(req, res) {
   var space = req.params.space;
   MongoClient.connect(dbloc, function(err, db) {
-      if(err) throw(err);
+      if(err) console.error(err);
       var collection = db.collection('members');
       collection.find({"space": space}).toArray(function(err, results) {
               if (err) {
@@ -359,6 +306,37 @@ app.get('/get_inames/:space', function(req, res) {
               }
           })
     })
+})
+
+app.get('/get_p_values', function(req, res) {
+  // based on a clique density, largest clique size, score threshold, and number of nodes,
+  // compute significance from null collection
+  var threshold = parseInt(req.query.threshold);
+  var sample_size = parseInt(req.query.sample_size);
+  var num_cliques = parseInt(req.query.num_cliques);
+  var largest_clique_size = parseInt(req.query.largest_clique_size);
+  //console.log(req); 
+  console.log(threshold, sample_size, num_cliques, largest_clique_size);
+  MongoClient.connect(dbloc, function(err, db) {
+    if (err) console.error(err);
+    var collection = db.collection("null_cliques");
+    collection.find({"sample_size": sample_size, "score": threshold}).toArray(function(err, results) {
+      if (err) console.error(err);
+      else {
+        console.log(results);
+        num_instances = results.length;
+        var ge_clique_density = results.filter(function(x) {
+          return x.num_cliques >= num_cliques;
+        });
+        var ge_largest_clique_size = results.filter(function(x) {
+          return x.largest_clique_size >= largest_clique_size;
+        });
+        var clique_density_p = Math.round(100 * (ge_clique_density.length / num_instances)) / 100; 
+        var largest_clique_size_p = Math.round(100 * (ge_largest_clique_size.length / num_instances)) / 100; 
+        res.send({"clique_density_p": clique_density_p, "largest_clique_size_p": largest_clique_size_p});
+      }
+    })
+  })
 })
 
 app.listen(8080);
