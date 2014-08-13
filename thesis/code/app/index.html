@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
   <head>
     <title>qviz</title>
@@ -213,8 +213,18 @@
 
                       <div class="panel-body" id="largest_clique">
                       </div>
-
                       
+                  </div>
+                  <div class="row">
+                    <div class="col-xs-12">
+
+                      <!-- legend {"trt_cp": "blue", "trt_oe": "green", "trt_sh.cgs": "red"}; -->
+                      <svg height="100" width="200">
+                        <circle cx="10" cy="10" r="10" stroke="none" stroke-width="3" fill="blue" /><text x="25" y="15" fill="black">compound</text>
+                        <circle cx="10" cy="35" r="10" stroke="none" stroke-width="3" fill="green" /><text x="25" y="40" fill="black">over-expression</text>
+                        <circle cx="10" cy="60" r="10" stroke="none" stroke-width="3" fill="red" /><text x="25" y="65" fill="black">knockdown</text>
+                      </svg>
+                    </div>
                   </div>
               </div>
 
@@ -428,7 +438,7 @@
     }
 
     // basic header and footer views
-    var CMapHeaderView = new Barista.Views.CMapHeaderView({el: $("#header_target"),title: "qviz",subtitle: "visualizing cmap query results"});
+    var CMapHeaderView = new Barista.Views.CMapHeaderView({el: $("#header_target"),title: "QViz",subtitle: "visualizing cmap query results"});
     var CMapFooterView = new Barista.Views.CMapFooterView({el: $("#footer_target")});
 
     // set up collection(s)
