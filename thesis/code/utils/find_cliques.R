@@ -1,16 +1,22 @@
-## a script to find cliques in a graph
-## and stick them into mongo
+## A script to find cliques in a graph
+## and insert them into a mongodb collection
+## as part of the QViz application backend.
+## Ted Natoli
+## August 2014
 
+
+# load required packages
 require("igraph", lib.loc="/Users/tnatoli/github/thesis/thesis/code/R")
 require("rmongodb", lib.loc="/Users/tnatoli/github/thesis/thesis/code/R")
 
+# set some global variables
 host <- "localhost"
 db <- "thesis"
 collection <- "cliques"
 
 namespace <- paste(db, collection, sep=".")
 
-# get args
+# get arguments
 args <- commandArgs(trailingOnly=T)
 infile <- args[1]
 analysis_id <- args[2]
@@ -24,9 +30,11 @@ if (is.na(min_size)) {
 	min_size <- 3
 }
 
+# read in the data
 d <- read.delim(infile)
 d <- d[, c("source", "target")]
 
+# make the graph object
 g <- graph.data.frame(d, directed=F)
 
 # find the cliques
@@ -51,47 +59,32 @@ if(nrow(d) == 0) {
 	}
 }
 
-
-# were there any cliques?
-# if (length(graph_cliques) == 0) {
-# 	# no, insert a single record with zero members
-# 	members <- c()
-# 	b <- mongo.bson.from.list(
-# 		list(analysis_id = analysis_id,
-# 		   	 clique_id = 0,
-# 		     members = members,
-# 		     num_members = length(members),
-# 		     largest_clique_size = largest_clique_size,
-# 		     largest_cliques = largest_cliques
-# 		)
-# 	)
-# 	mongo.insert(mongo, namespace, b)
-# } else {
-# 	## update this to only insert one document into mongo
-	mongo_cliques <- list()
-	mongo_largest_cliques <- list()
-	for (gc in graph_cliques) {
-		m <- g[gc]
-		members <- rownames(m)
-		mongo_cliques[[length(mongo_cliques) + 1]] <- list(size = length(members), members = members)
-	}
-	for (lc in largest_cliques) {
-		m <- g[lc]
-		members <- rownames(m)
-		mongo_largest_cliques[[length(mongo_largest_cliques) + 1]] <- list(size = length(members), members = members)
-	}
-	b <- mongo.bson.from.list(
-				list(
-					analysis_id=analysis_id,
-					num_cliques = length(graph_cliques),
-					cliques = mongo_cliques,
-					largest_clique_size = unlist(largest_clique_size),
-		     		largest_cliques = mongo_largest_cliques
-					)
+# format the cliques for insertion into mongo
+mongo_cliques <- list()
+mongo_largest_cliques <- list()
+for (gc in graph_cliques) {
+	m <- g[gc]
+	members <- rownames(m)
+	mongo_cliques[[length(mongo_cliques) + 1]] <- list(size = length(members), members = members)
+}
+for (lc in largest_cliques) {
+	m <- g[lc]
+	members <- rownames(m)
+	mongo_largest_cliques[[length(mongo_largest_cliques) + 1]] <- list(size = length(members), members = members)
+}
+# make a bson object
+b <- mongo.bson.from.list(
+			list(
+				analysis_id=analysis_id,
+				num_cliques = length(graph_cliques),
+				cliques = mongo_cliques,
+				largest_clique_size = unlist(largest_clique_size),
+	     		largest_cliques = mongo_largest_cliques
 				)
-	print(str(b))
-	mongo.insert(mongo, namespace, b)
-# }
+			)
+print(str(b))
+# do the insertion
+mongo.insert(mongo, namespace, b)
 
 
 

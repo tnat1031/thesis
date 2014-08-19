@@ -1,3 +1,9 @@
+// code for defining the web server that will interact with
+// the MongoDB database and, call R to compute clique density,
+// and correspond with the QViz web-based visualization.
+// Ted Natoli
+// August 2014
+
 var express = require('express');
 var fs = require('fs');
 var spawn = require('child_process').spawn;
@@ -144,8 +150,6 @@ var poscons = {
 function make_nodes_and_edges(docs, connection_thresh) {
     // take a list of docs and create an array of nodes and edges to be
     // sent back to client
-    // var nodes_only = typeof(nodes_only) !== 'undefined' ? nodes_only : false;
-    // var edges_only = typeof(egdes_only) !== 'undefined' ? edges_only : false;
     var seen_perts = [];
     var seen_combos = [];
     var nodes = [];
@@ -188,8 +192,6 @@ function make_nodes_and_edges(docs, connection_thresh) {
             }
         }
     }
-    // if (nodes_only) return(nodes);
-    // else if (edges_only) return(edges);
     return( {"nodes": nodes, "edges": edges} );
 }
 
@@ -214,7 +216,6 @@ app.get('/get_connections/:collection', function(req, res) {
     var collection_name = req.params.collection;
     var limit = parseInt(req.query.limit);
     var thresh = req.query.thresh ? req.query.thresh : 90;
-    //var poscon_set = req.query.poscon;
     var skip = req.query.skip ? parseInt(req.query.skip) : 0;
     var nodes = req.query.nodes ? req.query.nodes : false;
     if (!nodes) {
@@ -228,9 +229,6 @@ app.get('/get_connections/:collection', function(req, res) {
         if(err) throw(err);
         console.log("created " + outdir);
     })
-    // var nodes_only = typeof(req.query.nodes_only) !== 'undefined' ? nodes_only : false;
-    // var edges_only = typeof(req.query.egdes_only) !== 'undefined' ? edges_only : false;
-    // var random = req.query.random : true ? false;
     MongoClient.connect(dbloc, function(err, db) {
       if(err) console.error(err);
       var collection = db.collection(collection_name);
@@ -248,8 +246,6 @@ app.get('/get_connections/:collection', function(req, res) {
               nodes_and_edges = make_nodes_and_edges(results, thresh);
               dump_edges(nodes_and_edges.nodes, nodes_and_edges.edges, "edges.txt", outdir);
               var clique = spawn("/usr/bin/Rscript", [clique_script_path, edge_file, ts_dir]);
-              //console.log(clique);
-              //console.log("/usr/bin/Rscript", + [clique_script_path, edge_file, ts_dir].join(" "));
               clique.stdout.on("data", function(data) {
                 console.log(String(data));
               })
@@ -274,13 +270,8 @@ app.get('/get_cliques/:analysis_id', function(req, res) {
       collection.find({"analysis_id": analysis_id}).toArray(function(err, results) {
               if (err) {
                   console.error(err);
-              } else {
-                  // var num_cliques = results.length;
-                  // if((num_cliques === 1) && (results[0].num_members === 0)) {
-                  //   // we only got one record and it has no members, so really there were no cliques
-                  //   num_cliques = 0;
-                  // }
-                  
+              }
+              else {
                   res.send(results[0]);
               }
           })
@@ -295,13 +286,8 @@ app.get('/get_inames/:space', function(req, res) {
       collection.find({"space": space}).toArray(function(err, results) {
               if (err) {
                   console.error(err);
-              } else {
-                  // var num_cliques = results.length;
-                  // if((num_cliques === 1) && (results[0].num_members === 0)) {
-                  //   // we only got one record and it has no members, so really there were no cliques
-                  //   num_cliques = 0;
-                  // }
-                  
+              }
+              else {
                   res.send(results[0]);
               }
           })
@@ -315,7 +301,6 @@ app.get('/get_p_values', function(req, res) {
   var sample_size = parseInt(req.query.sample_size);
   var num_cliques = parseInt(req.query.num_cliques);
   var largest_clique_size = parseInt(req.query.largest_clique_size);
-  //console.log(req); 
   console.log(threshold, sample_size, num_cliques, largest_clique_size);
   MongoClient.connect(dbloc, function(err, db) {
     if (err) console.error(err);

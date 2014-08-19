@@ -1,4 +1,8 @@
- <!DOCTYPE html>
+<!-- code for generating the Qviz visualization
+Ted Natoli
+August 2014 -->
+
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <title>qviz</title>
@@ -20,11 +24,9 @@
         <div class="row" id="inputs">
             
             <!-- inputs for redrawing  -->
-            
               <form class="form-horizontal">
                 <fieldset>
-
-
+                
                 <!-- Form Name -->
                 <legend>Select Graph Parameters</legend>
 
@@ -34,12 +36,11 @@
                     <label class="col-xs-4 control-label" for="conn_space">Connectivity Space:</label>
                     <div class="col-xs-6">
                       <select id="conn_space" name="conn_space" class="form-control" data-step="1" data-intro="Select the connectivity space in which to perform your analysis." data-position="right">
-                        <option value="summly">Across Cell Lines</option>
-                        <!-- <option value="vcap_erg">VCAP-ERG</option> -->
-                        
+                        <option value="summly">Across Cell Lines</option>      
                       </select>
                     </div>
                   </div>
+                  
                   <!-- threshold -->
                   <div class="form-group">
                     <label class="col-xs-4 control-label" for="threshold">Score threshold:</label>  
@@ -60,9 +61,6 @@
 
                   </div>
                 </div>
-
-
-                
 
                 <div class="col-xs-4">
                   <!-- input nodes -->
@@ -119,7 +117,6 @@
 
                   <!-- Button -->
                   <div class="form-group">
-                    <!-- <label class="col-xs-4 control-label" for="redraw"></label> -->
                       <button id="redraw" name="redraw" class="btn btn-primary col-xs-4 col-xs-offset-4" data-step="11" data-intro="Click this button to re-draw the graph if after changing any parameters." data-position="left">Redraw</button>
                   </div>
                 </div>
@@ -135,11 +132,6 @@
 
         <!-- the vis components -->
         <div class="row">
-<!--
-            <div class="col-lg-4" id="tag_cloud">
-
-            </div>
--->
             <!-- loading group -->
             <div id="loading_group" class="row">
               <div class="cmap-spacer-large"></div>
@@ -147,7 +139,6 @@
                 <div class="col-xs-offset-5 col-xs-2 cmap-loading">
                 </div>
               </div>
-              <!-- <h4>Computing inter-connections...</h4> -->
             </div>
 
 
@@ -175,9 +166,6 @@
                   <div class="col-xs-12" id="textarea_input">
                       <form class="form-horizontal">
                           <fieldset>
-
-                          <!-- form title -->
-                          <!-- <legend>Input Node Names to Hightlight</legend>     -->
                           
                           <!-- Textarea -->
                           <div class="form-group">
@@ -245,7 +233,7 @@
     <div id="footer_target"></div>
   </body>
   <script src="libraries/barista.main.min.js"></script>
-  <!--<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>-->
+  
   <script type="text/javascript">
 
     var example_queries = {
@@ -333,13 +321,10 @@
 
     // set up some functions
     function draw_graph(edge_color, node_color, nodes, edges) {
+      
       // clear the svg and brush, if any
       $("#graph svg").remove();
-      //d3.selectAll(".brush").remove();
 
-      //console.log(edge_color);
-      //console.log(nodes);
-      //console.log(edges);
       // draw the force-directed graph
       var width = Math.max($("#graph").width(), 380); // 600
       var height = Math.max($("#graph").height(), 380);
@@ -443,11 +428,7 @@
 
     // set up collection(s)
     var node_collection = new Backbone.Collection([]);
-    // node_collection.url = "/get_connections/connections?poscon=HDAC_plus_PI3K_inhibitor&nodes_only=true";
-    // node_collection.fetch();
     var edge_collection = new Backbone.Collection([]);
-    // edge_collection.url = "/get_connections/connections?poscon=HDAC_plus_PI3K_inhibitor&edges_only=true";
-    // edge_collection.fetch();
 
     // set up some variables for force-directed graph
     var node_color = {"trt_cp": "blue", "trt_oe": "green", "trt_sh.cgs": "red"};
@@ -511,11 +492,9 @@
     // parse input from textarea
     $("#submit").click(function(event) {
         var lines = $("#highlight").val().split("\n");
-        //console.log(lines);
         lines.forEach(function(entry) {
             d3.select("#" + entry)
                     .attr("class", "selected");
-                    //.attr("r", 10);
         })
     })
 
@@ -523,7 +502,6 @@
       $("#highlight").val("");
         d3.selectAll(".selected")
                 .attr("class", "node");
-                //.attr("r", 6);
     }
 
     // clear any selections
@@ -583,7 +561,6 @@
       if (unrecognized.length > 0) {
         alert("These inputs were not recognized:\n" + unrecognized.join("\n"));
       }
-      //nodes = nodes.length > 0 ? nodes : false;
       var query = $.ajax({
         url: "/get_connections/" + collection + "?thresh=" + threshold + "&analysis_id=" + analysis_id, 
         type: "GET",

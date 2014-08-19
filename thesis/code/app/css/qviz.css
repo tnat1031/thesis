@@ -1,3 +1,8 @@
+/*
+Some basic styling for the QViz application.
+Ted Natoli
+August 2014
+*/
 
 .node {
   stroke: #fff;
@@ -5,8 +10,8 @@
 }
 
 .selected {
-	stroke: #00FFFF;
-	stroke-width: 3px;
+  stroke: #00FFFF;
+  stroke-width: 3px;
 }
 
 .link {
