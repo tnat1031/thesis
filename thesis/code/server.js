@@ -150,9 +150,11 @@ var poscons = {
 function make_nodes_and_edges(docs, connection_thresh) {
     // take a list of docs and create an array of nodes and edges to be
     // sent back to client
+    // nodes are optional list of nodes that will be appended to output
+    // but not used in edge calculations
     var seen_perts = [];
     var seen_combos = [];
-    var nodes = [];
+    nodes = [];
     var edges = [];
     var indices = {};
     for (var i = 0; i < docs.length; i++) {
@@ -207,7 +209,11 @@ function dump_edges(nodes, edges, file_name, outpath) {
     });
 }
 
-// set up some routes
+
+//////////////////////////
+/// set up some routes ///
+//////////////////////////
+
 app.get('/get_connections/:collection', function(req, res) {
     // sends back an object with keys for nodes and edges
     // allows specifying a poscon set to return
